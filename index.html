@@ -623,7 +623,7 @@ const GROUPS = ['Tesco','COOP Jednota','Plus Jeden Deň','JYSK','Möbelix, XXXLu
   'Strední klienti','Malí klienti','Municipál','Region Press - NOVINY','Region Press - LETÁKY','Red Post','New business'];
 const SERVICES = [['SCH','Neadreska schránky'],['PRED','Neadreska predajne'],['ZAHR','Neadreska zahraničie'],['TLAC','Neadreska tlač letákov']];
 const BLOCKS = [['SPOLU','Neadreska spolu',GROUPS],['SCH','Neadreska schránky',GROUPS],['PRED','Neadreska predajne',GROUPS],['ZAHR','Neadreska zahraničie',[]],['TLAC','Neadreska tlač letákov',[]]];
-const inSpolu = sv => sv==='SCH'||sv==='PRED';
+const inSpolu = sv => sv==='SCH'||sv==='PRED'||sv==='ZAHR';
 function blockRows(){ const o=[]; let hr=1; for(const [b,n,gs] of BLOCKS){ o.push({b,n,gs,hr}); hr+=1+4+4*gs.length+1; } return o; }
 const METRICS = [['ob','obrat'],['mc','marža'],['ms','marža (S)'],['pk','pokrytie']];
 const MONTHS = ['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December'];
@@ -633,7 +633,7 @@ const DEFAULT_CFG = {
     'CRWL':{inc:'ND',typ:'hlavný',g:''}, 'CRWL_RGP':{inc:'ND',typ:'hlavný',g:'Region Press - NOVINY'},
     'Red Post':{inc:'ND',typ:'hlavný',g:'Red Post'}, 'SP_CRWL':{inc:'ND',typ:'SP',g:''},
     'SP_CRWL_RGP':{inc:'ND',typ:'SP',g:'Region Press - NOVINY'}, 'SP_Red Post':{inc:'ND',typ:'SP',g:'Red Post'},
-    'zahraničie_KLS':{inc:'ZAHR',typ:'SP',g:''},
+    'zahraničie_CRW':{inc:'ZAHR',typ:'SP',g:''}, 'zahraničie_KLS':{inc:'NIE',typ:'SP',g:''},
     'KOLOS':{inc:'NIE',typ:'hlavný',g:''}, 'SP_KOLOS':{inc:'NIE',typ:'SP',g:''}, 'KOLOS_delta':{inc:'NIE',typ:'hlavný',g:''}
   },
   mrs: {
@@ -725,7 +725,7 @@ function processMonth(rowsV, rowsT, cfg, sel){
     if (multi && target && monOf(r)!==target){ otherMon.n++; otherMon.S+=num(r[V.S]); continue; }
     if ((V.th!=null && !/neadres/i.test(str(r[V.th]))) || (V.tc!=null && !/neadres/i.test(str(r[V.tc])))){ skipTyp.n++; skipTyp.S+=num(r[V.S]); continue; }
     const zc=cfg.zadania[zad];
-    if (excl.has(str(r[V.kl]).trim().toLowerCase()) && !(zc && zc.inc==='ZAHR')){ skipKl.n++; skipKl.S+=num(r[V.S]); continue; } const S=num(r[V.S]), R=num(r[V.R]), U=num(r[V.U]);
+    if (excl.has(str(r[V.kl]).trim().toLowerCase())){ skipKl.n++; skipKl.S+=num(r[V.S]); continue; } const S=num(r[V.S]), R=num(r[V.R]), U=num(r[V.U]);
     if(!zc){ unkZad[zad||'(prázdne)']=(unkZad[zad||'(prázdne)']||0)+S; continue; }
     if(zc.inc==='NIE') continue;
     incS+=S;
@@ -736,7 +736,7 @@ function processMonth(rowsV, rowsT, cfg, sel){
       const t=tk.get(key)||{AC:0,AI:0,AE:0,AR:0,BH:0,AZ:{},BA:{},AW:{}}; if(tk.has(key)) usedKeys.add(key);
       const pks=t.AC, pvia=(t.AZ.PRED_EXT||0)+(t.AZ.PRED_SP||0);
       const gross=t.AE+(t.BA.PRED_EXT||0)+(t.BA.PRED_SP||0); const den=t.BH-t.AR, coef=Math.abs(den)>0.005? t.BH/den : 1;
-      const pOb=gross*coef, pNc=pks*c/1000, pNs=(pks-pvia)*(U?R/U:0), nOwn=(pks-pvia)*c/1000;
+      const pOb=gross*coef, pNc=pks*c/1000, pNs=pks*(U?R/U:0), nOwn=pks*c/1000;
       add(blok,'PRED',kl,g0,pOb,pNc,pNs,pks,0,{psp:t.AZ.PRED_SP||0,pko:t.AZ.PRED_EXT||0,nsp:t.AW.PRED_SP||0,nko:t.AW.PRED_EXT||0,nown:nOwn,osp:(t.BA.PRED_SP||0)*coef,oko:(t.BA.PRED_EXT||0)*coef,oown:t.AE*coef,rown:pNs});
       add(blok,'SCH',kl,g0,S-pOb,(U-pks)*c/1000,R-pNs,U-pks);
       { const a={blok,wk:weekOf(blok),kl,g0,mat:mat.trim(),hm:num(r[V.hm]),kat:curKat,sk:U-pks,pk:pks,so:S-pOb,po:pOb}; akcie.push(a); akKey.set(key,a); }
@@ -744,8 +744,8 @@ function processMonth(rowsV, rowsT, cfg, sel){
       const mt=cfg.mrs[str(r[V.mrs]).trim()]||'INE';
       { const a=akKey.get(key); if(a) a.so+=S; else akPend.push([key,S]); }
       const sub=['ND_SP','PRED_EXT','PRED_SP'].includes(mt)? U*c/1000 : 0;
-      if (mt==='PRED_EXT'||mt==='PRED_SP'){ add(blok,'PRED',kl,g0,0,0,R,0); add(blok,'SCH',kl,g0,S,0,0,0); }
-      else add(blok,'SCH',kl,g0,S,(mt==='ND_SP'||mt==='SPRAC')?0:R,R,0,0, mt==='ND_SP'? {sspk:U,sspn:R,sspc:U*c/1000,ssps:S} : (mt==='SPRAC'? {sprn:R,sprs:S} : null));
+      if (mt==='PRED_EXT'||mt==='PRED_SP'){ add(blok,'PRED',kl,g0,0,0,R,U); add(blok,'SCH',kl,g0,S,0,0,0); }
+      else add(blok,'SCH',kl,g0,S,(mt==='ND_SP'||mt==='SPRAC')?0:R,R,(mt==='ND_SP'||mt==='SPRAC')?U:0,0, mt==='ND_SP'? {sspk:U,sspn:R,sspc:U*c/1000,ssps:S} : (mt==='SPRAC'? {sprn:R,sprs:S} : null));
     }
   }
   for (const t of tlac){ curOb=t.obch||topObch(t.kl); const tm=tlacMon(t); if(target && tm && tm!==target) continue; add(t.blok,'TLAC',t.kl,excGroup(cfg,t.kl,t.mat),t.ob,t.n,t.n,0,t.ks); tlacDet.push({kl:t.kl,mat:t.mat,blok:t.blok,ks:t.ks,ob:t.ob,n:t.n,dod:t.dod,popis:t.popis,zak:t.zak,obch:t.obch}); }
@@ -859,7 +859,8 @@ if(window.Chart) Chart.register({id:'monthBrackets', afterDraw(chart){ const m=c
 /* ---------- state & storage ---------- */
 const LS='neadreska.v1';
 let store={months:{},cfg:null};
-function ensureExc(){ const ex=store.cfg.exceptions=store.cfg.exceptions||[]; for(const e of DEFAULT_CFG.exceptions){ if(!ex.some(x=>String(x[0]).trim().toLowerCase()===String(e[0]).toLowerCase()&&String(x[1]).toLowerCase()===String(e[1]).toLowerCase())) ex.push([...e]); } }
+function ensureExc(){ const zd=store.cfg.zadania=store.cfg.zadania||{}; if(!zd['zahraničie_CRW']) zd['zahraničie_CRW']={inc:'ZAHR',typ:'SP',g:''}; if(zd['zahraničie_KLS']&&zd['zahraničie_KLS'].inc==='ZAHR') zd['zahraničie_KLS'].inc='NIE';
+  const ex=store.cfg.exceptions=store.cfg.exceptions||[]; for(const e of DEFAULT_CFG.exceptions){ if(!ex.some(x=>String(x[0]).trim().toLowerCase()===String(e[0]).toLowerCase()&&String(x[1]).toLowerCase()===String(e[1]).toLowerCase())) ex.push([...e]); } }
 function loadStore(){ try{ const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.months) store=s; }catch(e){} 
   if(!store.cfg) store.cfg=JSON.parse(JSON.stringify(DEFAULT_CFG)); if(!store.cfg.excludeClients) store.cfg.excludeClients=[...DEFAULT_CFG.excludeClients]; if(!store.cfg.team) store.cfg.team=JSON.parse(JSON.stringify(DEFAULT_CFG.team)); if(!store.cfg.maskExtra) store.cfg.maskExtra=[]; }
 function saveStore(){ let ok=true; try{ localStorage.setItem(LS,JSON.stringify(store)); }catch(e){ ok=false; if(!FB.on) toast('Uloženie v prehliadači zlyhalo: '+e.message); } fbSchedule(); return ok; }
@@ -1035,7 +1036,7 @@ function renderFilters(){
   const base=allRecs(inRange); const byGr={}; base.forEach(r=>{byGr[r.g]=(byGr[r.g]||0)+r.ob;});
   if(tab==='kat' && fSv.has('TLAC')) fSv.clear(); if(fSv.has('TLAC') && gran==='wk') gran='mo';
   const svCur=[...fSv][0]||'', grCur=[...fGr][0]||'';
-  $('#fSv').innerHTML=[['','Neadreska spolu'],['SCH','Schránky'],['PRED','Predajne'],['ZAHR','Zahraničie'],['TLAC','Tlač letákov']].filter(([s])=>!(tab==='kat'&&s==='TLAC')).map(([s,l])=>`<button data-v="${s}" class="${s===svCur?'on':''}" ${s==='TLAC'?'title="Tlač letákov sa zobrazuje po mesiacoch"':''}>${SV_ICO[s]||''}${l}</button>`).join('');
+  $('#fSv').innerHTML=[['','Neadreska spolu'],['SCH','Schránky'],['PRED','Predajne'],['TLAC','Tlač letákov']].filter(([s])=>!(tab==='kat'&&s==='TLAC')).map(([s,l])=>`<button data-v="${s}" class="${s===svCur?'on':''}" ${s==='TLAC'?'title="Tlač letákov sa zobrazuje po mesiacoch"':''}>${SV_ICO[s]||''}${l}</button>`).join('');
   $('#fSv').querySelectorAll('button').forEach(b=>b.onclick=()=>{ fSv.clear(); if(b.dataset.v) fSv.add(b.dataset.v); render(); });
   const grs=[...GROUPS,'Zahraničie','Tlač letákov','NEZARADENÉ'].filter(g=>byGr[g]||g===grCur);
   $('#fGr').innerHTML=`<option value="">Všetky skupiny</option>`+grs.map(g=>`<option value="${esc(g)}" ${g===grCur?'selected':''}>${esc(g)}</option>`).join('');
@@ -1172,9 +1173,9 @@ function renderOvTable(){
   const R=allRecs(r=>(r.rok===y||r.rok===y-1)&&gOk(r));
   const PL=planRecs(store,cfg(),y).filter(p=>!fGr.size||fGr.has(p.g));
   const planSplit=PL.some(p=>p.sv==='PRED');
-  const isT=fSv.has('TLAC'), isZ=fSv.has('ZAHR'); const exp= ovExp || fSv.has('SCH') || fSv.has('PRED');
-  const SV= isT? [['TLAC','Tlač letákov',x=>x.sv==='TLAC',0]] : isZ? [['ZAHR','Zahraničie',x=>x.sv==='ZAHR',0]] :
-    [['SPOLU','Neadresné doručovanie',x=>inSpolu(x.sv),0],...(exp?[['SCH','Schránky',x=>x.sv==='SCH',1],['PRED','Predajne',x=>x.sv==='PRED',1]]:[])];
+  const isT=fSv.has('TLAC'), isZ=false; const exp= ovExp || fSv.has('SCH') || fSv.has('PRED');
+  const SV= isT? [['TLAC','Tlač letákov',x=>x.sv==='TLAC',0]] :
+    [['SPOLU','Neadresné doručovanie',x=>inSpolu(x.sv),0],...(exp?[['SCH','Schránky',x=>x.sv==='SCH',1],['PRED','Predajne',x=>x.sv==='PRED',1],['ZAHR','Zahraničie',x=>x.sv==='ZAHR',1]]:[])];
   const agg=(arr,f)=>arr.reduce((a,x)=>{ if(!f(x)) return a; a.ob+=x.ob||0; a.mz+=(x.ob||0)-(x.nc||0); a.ms+=(x.ob||0)-(x.ns||0); a.ks+= x.sv==='TLAC'? (x.ks||0) : (x.pk||0); a.n++; return a; },{ob:0,mz:0,ms:0,ks:0,n:0});
   const aggP=(arr,f)=>arr.reduce((a,x)=>{ if(!f(x)) return a; a.ob+=x.ob||0; a.mz+=x.mz||0; a.ks+=x.pk||0; a.n++; return a; },{ob:0,mz:0,ks:0,n:0});
   const MET=[['ob','Obrat','€'],['mz','Marža','€'],['ms','Marža (S)','€'],['ks','Kusy','']];
@@ -1185,22 +1186,22 @@ function renderOvTable(){
   const f=(v,u)=> v==null? '<span class="muted">–</span>' : fmt(v)+(u?' €':'');
   const d=(v,u)=> v==null? '' : `<span style="color:${v>=0?'var(--ok)':'var(--bad)'}">${v>=0?'+':''}${fmt(v)}${u?' €':''}</span>`;
   const perL= range? (pFrom===pTo? MONTHS[pFrom-1] : MONTHS[pFrom-1].slice(0,3)+'–'+MONTHS[pTo-1].slice(0,3)) : 'Rok';
-  let h=`<div class="row" style="margin-bottom:8px"><h3 style="margin:0">${isT?'Tlač letákov':isZ?'Zahraničie':'Neadresné doručovanie'} – výsledky ${y}${HELP('Hlavná tabuľka výsledkov za obdobie z hornej lišty. Realita = nahraté mesiace, Plán = plán z BP. Plnenie a rozdiel sa počítajú len za mesiace, ktoré sú nahraté. YTD = od januára po posledný nahratý mesiac. Kliknutím na Neadresné doručovanie rozbalíte schránky a predajne.')}</h3><span class="small muted">· ${periodText()} · YTD = január – ${MONTHS[yTo-1].toLowerCase()}${fGr.size?' · '+esc([...fGr][0]):''}</span></div><div class="scroll"><table class="tbl ovTbl">
+  let h=`<div class="row" style="margin-bottom:8px"><h3 style="margin:0">${isT?'Tlač letákov':isZ?'Zahraničie':'Neadresné doručovanie'} – výsledky ${y}${HELP('Hlavná tabuľka výsledkov za obdobie z hornej lišty. Realita = nahraté mesiace, Plán = plán z BP. Plnenie a rozdiel sa počítajú len za mesiace, ktoré sú nahraté. YTD = od januára po posledný nahratý mesiac. Kliknutím na Neadresné doručovanie rozbalíte schránky, predajne a zahraničie.')}</h3><span class="small muted">· ${periodText()} · YTD = január – ${MONTHS[yTo-1].toLowerCase()}${fGr.size?' · '+esc([...fGr][0]):''}</span></div><div class="scroll"><table class="tbl ovTbl">
     <tr class="gh"><th colspan="2"></th><th colspan="2" class="hR">Realita</th><th colspan="2" class="hPl">Plán</th><th colspan="2" class="hPn">Plnenie ${perL.toLowerCase()}</th><th colspan="2" class="hPn">Plnenie YTD</th><th colspan="2" class="hLy">Minulý rok</th><th colspan="2" class="hLy">Index k MR</th></tr>
     <tr><th></th><th></th><th>${perL}</th><th>YTD</th><th>${perL}</th><th>YTD</th><th style="text-align:left">%</th><th>Rozdiel</th><th style="text-align:left">%</th><th>Rozdiel</th><th>${perL}</th><th>YTD</th><th>${perL}</th><th>YTD</th></tr>`;
   for(const [key,lab,flt,lvl] of SV){
     const rP=agg(R.filter(x=>x.rok===y&&inP(x.mes)),flt), rY=agg(R.filter(x=>x.rok===y&&inY(x.mes)),flt);
     const lP=agg(R.filter(x=>x.rok===y-1&&inP(x.mes)),flt), lY=agg(R.filter(x=>x.rok===y-1&&inY(x.mes)),flt);
-    const hasPlan= key==='SPOLU'||key==='TLAC'||key==='ZAHR'||planSplit;
+    const hasPlan= key==='SPOLU'||key==='TLAC'||planSplit;
     const pP=hasPlan? aggP(PL.filter(p=>inP(p.mes)&&realMy.has(p.mes)),flt) : null, pY=hasPlan? aggP(PL.filter(p=>inY(p.mes)&&realMy.has(p.mes)),flt) : null;
     if(!rY.n&&!(pY&&pY.n)&&!lY.n) continue;
     MET.forEach(([m,ml,u],i)=>{ const isS=m==='ms'; const pv=x=> (!x||!x.n||(m==='ks'&&(key==='TLAC'||key==='ZAHR')))? null : (isS? x.mz : x[m]); const lv=x=> x.n? x[m] : null;
       const vP=pv(pP), vY=pv(pY);
-      h+=`<tr class="${i===0?'svTop':''} ${lvl?'svSub':''}">${i===0?`<td rowspan="4" class="svLab ${key==='SPOLU'&&!isT&&!isZ?'svTog':''}" ${key==='SPOLU'?'data-tog':''}>${key==='SPOLU'?`<span class="chev">${exp?'▾':'▸'}</span>`:''}${lvl?'<span style="display:inline-block;width:18px"></span>':''}<span class="svIc">${OV_ICO[key]}</span><b>${lab}</b>${key==='SPOLU'?`<div class="small muted" style="margin-left:22px">${exp?'skryť':'rozbaliť'} schránky a predajne</div>`:''}</td>`:''}<td class="mLab">${ml}</td>
+      h+=`<tr class="${i===0?'svTop':''} ${lvl?'svSub':''}">${i===0?`<td rowspan="4" class="svLab ${key==='SPOLU'&&!isT&&!isZ?'svTog':''}" ${key==='SPOLU'?'data-tog':''}>${key==='SPOLU'?`<span class="chev">${exp?'▾':'▸'}</span>`:''}${lvl?'<span style="display:inline-block;width:18px"></span>':''}<span class="svIc">${OV_ICO[key]}</span><b>${lab}</b>${key==='SPOLU'?`<div class="small muted" style="margin-left:22px">${exp?'skryť':'rozbaliť'} schránky, predajne a zahraničie</div>`:''}</td>`:''}<td class="mLab">${ml}</td>
         <td class="cR"><b>${f(rP[m],u)}</b></td><td class="cR">${f(rY[m],u)}</td><td>${f(vP,u)}</td><td>${f(vY,u)}</td>
         <td style="text-align:left">${bar(vP!=null?pc(rP[m],vP):null)}</td><td>${vP!=null?d(rP[m]-vP,u):''}</td><td style="text-align:left">${bar(vY!=null?pc(rY[m],vY):null)}</td><td>${vY!=null?d(rY[m]-vY,u):''}</td>
         <td class="muted">${f(lv(lP),u)}</td><td class="muted">${f(lv(lY),u)}</td><td>${idx(lP.n?pc(rP[m],lP[m]):null)}</td><td>${idx(lY.n?pc(rY[m],lY[m]):null)}</td></tr>`; }); }
-  h+=`</table></div><p class="small muted" style="margin:8px 0 0">Marža = tabuľková (kusy × nákladové ceny), Marža (S) = skutočná podľa Výsledkov. Plán a plnenie sa počítajú za mesiace s nahratou realitou.${!planSplit&&!isT&&!isZ&&exp?' Plán '+y+' nie je rozdelený na schránky a predajne – je pri Neadresnom doručovaní spolu.':''}${!isT&&!isZ?' Tlač letákov a zahraničie sú v samostatných kartách (tlačidlá hore).':''}</p>`;
+  h+=`</table></div><p class="small muted" style="margin:8px 0 0">Marža = tabuľková (kusy × nákladové ceny), Marža (S) = skutočná podľa Výsledkov. Plán a plnenie sa počítajú za mesiace s nahratou realitou.${!planSplit&&!isT&&exp?' Plán '+y+' nie je rozdelený na schránky, predajne a zahraničie – je pri Neadresnom doručovaní spolu.':''}${!isT?' Neadresné doručovanie = schránky + predajne + zahraničie (zadanie zahraničie_CRW). Tlač letákov je v samostatnej karte (tlačidlo hore).':''}</p>`;
   $('#ovTab').innerHTML=h;
   const tg=$('#ovTab [data-tog]'); if(tg) tg.onclick=()=>{ ovExp=!ovExp; renderOvTable(); };
 }
@@ -1226,7 +1227,7 @@ function renderOverview(){
       const hdr=l=>`<tr><td colspan="9" style="text-align:left;padding-top:14px;font-weight:600;color:var(--navy)">${l}</td></tr>`;
       let h='<tr><th style="text-align:left">Kanál</th><th>Kusy</th><th style="text-align:left">Podiel</th><th>Obrat</th><th>Náklad</th><th>Marža</th><th>Marža %</th><th>Náklad / 1000</th><th>Obrat / 1000</th></tr>'; let old=false;
       let ext={k:0,o:0,n:0};
-      if(showS){ const sc=flt('SCH'); const ks=sum(sc,'pk'), spk=sum(sc,'sspk'), spn=sum(sc,'sspn')+sum(sc,'sprn'), spo=sum(sc,'ssps'), ob=sum(sc,'ob'), nTab=sum(sc,'nc')-sum(sc,'sspc');
+      if(showS){ const sc=flt('SCH'); const ks=sum(sc,'pk'), spk=sum(sc,'sspk'), spn=sum(sc,'sspn')+sum(sc,'sprn'), spo=sum(sc,'ssps'), ob=sum(sc,'ob'), nTab=sum(sc,'nc');
         const scOld=sc.some(r=>r.pk>0) && !sc.some(r=>r.ssps!==undefined);
         if(scOld) h+=hdr('Schránky')+`<tr><td colspan="9" style="text-align:left;background:color-mix(in srgb,var(--warn) 12%,transparent)"><b>Rozdelenie schránok na vlastnú sieť a poštu chýba</b> – mesiac bol uložený pred doplnením tejto funkcie. Nahrajte ho znova.</td></tr>`+row('Schránky spolu',ks,ks,ob,null,null,'tot');
         else h+=hdr('Schránky')+row('Vlastná sieť Cromwell <span class="small muted">náklad podľa cenníka</span>',ks-spk,ks,ob-spo,nTab,cL)+row('Podané na pošte (SP) <span class="small muted">vrátane spracovania</span>',spk,ks,spo,spn,cP)+row('Schránky spolu',ks,ks,ob,nTab+spn,null,'tot');
@@ -1237,7 +1238,7 @@ function renderOverview(){
         ext.k+=sp+ko; ext.o+=osp+oko; ext.n+=nsp+nko; }
       if(showS&&showP){
         const sc=flt('SCH'), pr=flt('PRED'); const ks=sum(sc,'pk')+sum(pr,'pk'), ob=sum(sc,'ob')+sum(pr,'ob');
-        const nS=(sum(sc,'nc')-sum(sc,'sspc'))+sum(sc,'sspn')+sum(sc,'sprn'), nP=sum(pr,'nown')+sum(pr,'nko')+sum(pr,'nsp');
+        const nS=sum(sc,'nc')+sum(sc,'sspn')+sum(sc,'sprn'), nP=sum(pr,'nown')+sum(pr,'nko')+sum(pr,'nsp');
         h+=`<tr><td colspan="9" style="padding:6px"></td></tr>`+row('<b>Zrátané schránky a predajne</b>',ks,0,ob,nS+nP,null,'tot grand'); }
       $('#predTbl').innerHTML=h; $('#predOld').classList.toggle('hide',!old); } }
   // KPIs
@@ -1802,10 +1803,10 @@ function planMaskSheet(y,recs){
   const year=(rr,cells)=>cells.forEach(([b,k])=>put(rr,mc(12,b,k),'=SUM('+[...Array(12)].map((_,mi)=>L(mi,b,k)+(rr+1)).join(',')+')',null));
   const ALL=[]; for(let b=0;b<3;b++) for(let k=0;k<BW;k++) ALL.push([b,k]);
   // data
-  const V={}; recs.forEach(x=>{ if(!inSpolu(x.sv)) return; const key=x.sv+'|'+x.g+'|'+x.kat; const o=(V[key]??=Array.from({length:12},()=>({ks:0,ob:0}))); o[x.mes-1].ks+=x.pk; o[x.mes-1].ob+=x.ob; });
+  const V={}; recs.forEach(x=>{ if(!(x.sv==='SCH'||x.sv==='PRED')) return; const key=x.sv+'|'+x.g+'|'+x.kat; const o=(V[key]??=Array.from({length:12},()=>({ks:0,ob:0}))); o[x.mes-1].ks+=x.pk; o[x.mes-1].ob+=x.ob; });
   const EX={}; recs.forEach(x=>{ if(x.sv==='TLAC'||x.sv==='ZAHR'){ const o=(EX[x.sv]??=Array.from({length:12},()=>({ob:0,mz:0}))); o[x.mes-1].ob+=x.ob; o[x.mes-1].mz+=x.mz; } });
   sec('SÚHRN – pevné riadky pre hlavnú masku BP');
-  const S={}; [['SPOLU','Neadreska spolu (schránky + predajne)'],['TLAC','Tlač letákov (zvlášť, nezapočítava sa)'],['ZAHR','Zahraničie (zvlášť, nezapočítava sa)']].forEach(([k,l])=>{ S[k]=r; put(r,0,l,{font:F({b:true,c:k==='SPOLU'?C.white:C.ink})}); r++; });
+  const S={}; [['SPOLU','Neadreska spolu (schránky + predajne + zahraničie)'],['TLAC','Tlač letákov (zvlášť, nezapočítava sa)'],['ZAHR','   z toho zahraničie (zahraničie_CRW)']].forEach(([k,l])=>{ S[k]=r; put(r,0,l,{font:F({b:true,c:k==='SPOLU'?C.white:C.ink})}); r++; });
   r++; sec('NEADRESKA SPOLU'); const G={}; GR.forEach(g=>{ G[g]=r; put(r,0,g,{font:F({c:C.navy})}); r++; });
   r++; sec('SCHRÁNKY A PREDAJNE – po skupinách a hmotnostných kategóriách');
   const grow={};
@@ -1820,13 +1821,13 @@ function planMaskSheet(y,recs){
     const k0=rows[0]+1, k1=rows[rows.length-1]+1;
     for(let mi=0;mi<13;mi++) for(let b=0;b<3;b++) for(let k=0;k<BW;k++) put(gr,mc(mi,b,k),`=SUM(${L(mi,b,k)}${k0}:${L(mi,b,k)}${k1})`);
     styleRow(gr,'sum'); }
-  r++; sec('TLAČ LETÁKOV a ZAHRANIČIE (vykazujú sa zvlášť)');
+  r++; sec('TLAČ LETÁKOV (zvlášť) a ZAHRANIČIE (súčasť Neadreska spolu)');
   const exRow={}; for(const [k,l] of [['TLAC','Tlač letákov'],['ZAHR','Zahraničie']]){ exRow[k]=r; put(r,0,l,{font:F({b:true})}); const e=EX[k]||[];
     for(let mi=0;mi<12;mi++){ const ob=Math.round((e[mi]?.ob||0)*100)/100, mz=Math.round((e[mi]?.mz||0)*100)/100; if(ob) put(r,mc(mi,2,1),ob); if(mz) put(r,mc(mi,2,3),mz); }
     year(r,[[2,0],[2,1],[2,2],[2,3]]); styleRow(r,'row',[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3]]); r++; }
   // summary formulas
   for(let mi=0;mi<13;mi++) for(let b=0;b<3;b++) for(let k=0;k<BW;k++){ const col=L(mi,b,k);
-    put(S.SPOLU,mc(mi,b,k),'='+GR.map(g=>`N(${col}${grow[g]+1})`).join('+')); GR.forEach(g=>put(G[g],mc(mi,b,k),`=${col}${grow[g]+1}`)); }
+    put(S.SPOLU,mc(mi,b,k),'='+GR.map(g=>`N(${col}${grow[g]+1})`).join('+')+(b===2?`+N(${col}${exRow.ZAHR+1})`:'')); GR.forEach(g=>put(G[g],mc(mi,b,k),`=${col}${grow[g]+1}`)); }
   for(let mi=0;mi<13;mi++) for(let k=0;k<BW;k++){ put(S.TLAC,mc(mi,2,k),`=${L(mi,2,k)}${exRow.TLAC+1}`); put(S.ZAHR,mc(mi,2,k),`=${L(mi,2,k)}${exRow.ZAHR+1}`); }
   styleRow(S.SPOLU,'total'); styleRow(S.TLAC,'sum',[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3]]); styleRow(S.ZAHR,'sum',[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3]]);
   GR.forEach(g=>styleRow(G[g],'grp'));
@@ -2389,7 +2390,7 @@ function maskWorkbook(ym){
       for(let c=0;c<11;c++) S(rr,c,{font:F({c: c<3? C.muted : C.ink, b: has&&(c===4||c===8)}),border:{bottom:ln},fill:(c===6||c===10)?{fgColor:{rgb:C.grey}}:undefined,numFmt:c===2?'#,##0.00\\ "€"':(c===3||c===7)?INT:(c>=4?EUR:undefined),alignment:c===1?{horizontal:'center'}:undefined}); });
   }
   // tlač / zahraničie
-  aoa.push([]); const r0=aoa.length; aoa.push(['Do bloku Spolu (vykazuje sa zvlášť)','','','Kusy','Obrat','Marža (S)','Marža']);
+  aoa.push([]); const r0=aoa.length; aoa.push(['Do bloku Spolu – Tlač (zvlášť) a Zahraničie (súčasť neadresky)','','','Kusy','Obrat','Marža (S)','Marža']);
   for(let c=0;c<7;c++) S(r0,c,{font:F({b:true,c:C.white}),fill:{fgColor:{rgb:C.navy}},alignment:{horizontal:c>=3?'right':'left'}});
   [['TLAC','Tlač letákov'],['ZAHR','Zahraničie']].forEach(([k,l])=>{ const v=d.V[k]||{}; const rr=aoa.length; aoa.push([l,'','',Math.round(v.ks||0),r2m(v.ob||0),r2m(v.ms||0),r2m(v.mz||0)]);
     for(let c=0;c<7;c++) S(rr,c,{font:F({b:c===0||c===4}),border:{bottom:ln},numFmt:c===3?INT:(c>=4?EUR:undefined)}); });
