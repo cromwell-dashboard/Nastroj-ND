@@ -869,7 +869,14 @@ function saveStore(){ let ok=true; try{ localStorage.setItem(LS,JSON.stringify(s
 /* ================= Firebase (zdieľané dáta pre všetkých používateľov) =================
    Vyplňte konfiguráciu z Firebase konzoly (Project settings → Your apps → Web app → firebaseConfig).
    Kým je FB_CONFIG = null, nástroj ukladá dáta len v prehliadači (ako doteraz).            */
-const FB_CONFIG = null;
+   const FB_CONFIG = {
+     apiKey: "…",
+     authDomain: "….firebaseapp.com",
+     projectId: "…",
+     storageBucket: "…",
+     messagingSenderId: "…",
+     appId: "…"
+   };
 /* const FB_CONFIG = { apiKey:"…", authDomain:"…firebaseapp.com", projectId:"…", storageBucket:"…", messagingSenderId:"…", appId:"…" }; */
 const FB_AUTH = 'email';           // 'email' = e-mail + heslo (rovnaké účty ako v Zappise), 'google' = Google účet, 'anonymous' = bez prihlásenia
 const FB_ALLOWED_DOMAIN = 'cromwell.sk';  // povolená doména e-mailov pri prihlásení Googlom ('' = ktokoľvek)
