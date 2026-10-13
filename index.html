@@ -379,6 +379,7 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
 .savedM{text-align:center;max-width:420px;padding:26px}
 .savedIc{width:54px;height:54px;border-radius:50%;background:var(--ok);color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto}
 #predTbl tr.grand td{background:#E4E7EE;font-weight:700;border-top:2px solid var(--line)}
+.kzT td,.kzT th{white-space:nowrap}
 /* plan */
 .ptbl{border-collapse:separate;border-spacing:0;font-size:12px;width:max-content;min-width:100%}
 .ptbl th{font-weight:500;color:var(--muted);padding:6px 4px;border-bottom:1px solid var(--line);text-align:right;background:var(--card);position:sticky;top:0;z-index:1}
@@ -408,7 +409,7 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
 <body>
 <div class="app">
 <aside class="rail" id="rail">
-  <button data-tab="upl" title="Nahrať"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg><span>Nahrať</span></button><button data-tab="ov" title="Prehľad"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Prehľad</span></button><button data-tab="kat" title="Kategórie"><svg viewBox="0 0 24 24"><path d="M6 21h12M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"/></svg><span>Kategórie</span></button><button data-tab="kl" title="Klienti"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M17 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7"/></svg><span>Klienti</span></button><button data-tab="ob" title="Obchodníci"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/><path d="M12 14l-1.5 3 1.5 4 1.5-4z"/></svg><span>Obchodníci</span></button><button data-tab="pl" title="Plán"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Plán</span></button>
+  <button data-tab="upl" title="Nahrať"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg><span>Nahrať</span></button><button data-tab="ov" title="Prehľad"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Prehľad</span></button><button data-tab="kat" title="Kategórie"><svg viewBox="0 0 24 24"><path d="M6 21h12M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"/></svg><span>Kategórie</span></button><button data-tab="kl" title="Klienti"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M17 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7"/></svg><span>Klienti</span></button><button data-tab="ob" title="Obchodníci"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/><path d="M12 14l-1.5 3 1.5 4 1.5-4z"/></svg><span>Obchodníci</span></button><button data-tab="ko" title="Kontroly"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg><span>Kontroly</span></button><button data-tab="zl" title="Zľavy"><svg viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/><path d="m15 9-6 6"/></svg><span>Zľavy</span></button><button data-tab="pl" title="Plán"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Plán</span></button>
   <span class="sp"></span>
   <button data-tab="ex" title="Export"><svg viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg><span>Export</span></button><button data-tab="set" title="Nastavenia"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Nastavenia</span></button>
 </aside>
@@ -512,6 +513,10 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
     <p class="small muted hide" id="obOld" style="margin-bottom:0">Niektoré mesiace boli uložené pred doplnením obchodníkov – nahrajte ich znova a prepíšte, inak sa nezobrazia.</p>
   </div>
 </section>
+
+<!-- ============ KONTROLY / ZĽAVY ============ -->
+<section id="t-ko" class="hide"><div id="koBox"></div></section>
+<section id="t-zl" class="hide"><div id="zlBox"></div></section>
 
 <!-- ============ PLAN ============ -->
 <section id="t-pl" class="hide">
@@ -676,7 +681,8 @@ function processMonth(rowsV, rowsT, cfg, sel){
   const V=hv.idx, T=ht.idx;
   // index tržby by key
   const hT=(rowsT[ht.start-1]||[]).map(x=>str(x).trim());
-  const iDt=hT.indexOf('Dátum distribúcie'), iOb=hT.indexOf('Obchodník'), iZk=hT.indexOf('Zákazka č.'), iP=hT.indexOf('ND - Počet'), iTs=hT.indexOf('ND - Suma'), iDod=hT.indexOf('Dodávateľ MRS'), iPop=hT.indexOf('MRS - Popis');
+  const iDt=hT.indexOf('Dátum distribúcie'), iOb=hT.indexOf('Obchodník'), iZk=hT.indexOf('Zákazka č.'), iP=hT.indexOf('ND - Počet'), iTs=hT.indexOf('ND - Suma'), iDod=hT.indexOf('Dodávateľ MRS'), iPop=hT.indexOf('MRS - Popis'), iKp=hT.indexOf('Kontrola - Popis'), iKn=hT.indexOf('Kontrola - Počet'), iKs=hT.indexOf('Kontrola - Suma'), iZn=hT.indexOf('Zľava - Počet'), iZs=hT.indexOf('Zľava - Suma'), iHm=hT.indexOf('Hmotnosť');
+  const kontr=[], zlav=[];
   const keyMrs=new Map();
   const keyObch=new Map(), klObch=new Map(), trzRows=[];
   function topObch(kl){ const m=klObch.get(kl); if(!m) return ''; return Object.entries(m).sort((a,b)=>b[1]-a[1])[0][0]; }
@@ -689,6 +695,8 @@ function processMonth(rowsV, rowsT, cfg, sel){
     if (mt){ const code=cfg.mrs[mt]||mt; o.AZ[code]=(o.AZ[code]||0)+num(r[T.AZ]); o.BA[code]=(o.BA[code]||0)+num(r[T.BA]); o.AW[code]=(o.AW[code]||0)+num(r[T.AW]); }
     if (mt && key && !keyMrs.has(key)) keyMrs.set(key,{dod:iDod>=0?str(r[iDod]).trim():'',popis:iPop>=0?str(r[iPop]).trim():'',zak:iZk>=0?str(r[iZk]).trim():'',obch:iOb>=0?str(r[iOb]).trim():''});
     if (cfg.tlacTypes.includes(mt)) tlac.push({dod:iDod>=0?str(r[iDod]).trim():'',popis:iPop>=0?str(r[iPop]).trim():'',zak:iZk>=0?str(r[iZk]).trim():'',obch:iOb>=0?str(r[iOb]).trim():'',blok:str(r[T.blok]),kl:str(r[T.kl]),mat:str(r[T.mat]),key,dt:iDt>=0?r[iDt]:null,ob:num(r[T.BA]),n:num(r[T.AW]),ks:num(r[T.AZ])});
+    if(iKp>=0 && (str(r[iKp]).trim()||num(r[iKn])||num(r[iKs])) && str(r[T.kl]).trim()) kontr.push({kl:str(r[T.kl]).trim(),obch:iOb>=0?str(r[iOb]).trim():'',zak:iZk>=0?str(r[iZk]).trim():'',blok:str(r[T.blok]),key,dt:iDt>=0?r[iDt]:null,popis:str(r[iKp]).trim(),pocet:num(r[iKn]),suma:num(r[iKs])});
+    if(iZs>=0 && num(r[iZs]) && str(r[T.kl]).trim()) zlav.push({kl:str(r[T.kl]).trim(),obch:iOb>=0?str(r[iOb]).trim():'',zak:iZk>=0?str(r[iZk]).trim():'',blok:str(r[T.blok]),key,dt:iDt>=0?r[iDt]:null,mat:str(r[T.mat]).trim(),hm:iHm>=0?num(r[iHm]):0,pocet:iZn>=0?num(r[iZn]):0,suma:num(r[iZs])});
     trzPredKs+=num(r[T.AC]);
     { const ob=iOb>=0? str(r[iOb]).trim() : ''; const kl=str(r[T.kl]); const blk=str(r[T.blok]);
       if(ob){ if(key && !keyObch.has(key)) keyObch.set(key,ob); const m=(klObch.get(kl)||{}); m[ob]=(m[ob]||0)+1; klObch.set(kl,m); }
@@ -750,7 +758,9 @@ function processMonth(rowsV, rowsT, cfg, sel){
     const k=[t.blk,t.kl,t.ob].join('\u0001'); let o=ordM.get(k); if(!o){ o={blok:t.blk,wk:weekOf(t.blk),kl:t.kl,obch:t.ob,zad:0,zak:new Set()}; ordM.set(k,o); } o.zad++; if(t.zak) o.zak.add(t.zak); }
   const ord=[...ordM.values()].map(o=>({...o,zak:[...o.zak]}));
   for(const [k,S] of akPend){ const a=akKey.get(k); if(a) a.so+=S; }
-  return {rok,mes,months,ord,tlacDet,zahrDet,akcie,mrsPredOut,trzMonths:[...trzMon].sort(),recs,checks:{mrsPredOut,otherMon,incS,sumOb,unkZad,skipTyp,skipKl,typFilter:(V.th!=null&&V.tc!=null),lostPred,tlacCount:tlac.length,missingV:hv.missing,missingT:ht.missing}};
+  const kontroly=kontr.filter(k=>{ if(excl.has(k.kl.toLowerCase())) return false; const tm=tlacMon(k); return !target || !tm || tm===target; }).map(k=>({kl:k.kl,obch:k.obch,zak:k.zak,blok:k.blok,popis:k.popis,pocet:k.pocet,suma:k.suma}));
+  const zlavy=zlav.filter(k=>{ if(excl.has(k.kl.toLowerCase())) return false; const tm=tlacMon(k); return !target || !tm || tm===target; }).map(k=>({kl:k.kl,obch:k.obch,zak:k.zak,blok:k.blok,mat:k.mat,hm:k.hm,pocet:k.pocet,suma:k.suma}));
+  return {rok,mes,months,ord,tlacDet,zahrDet,akcie,kontroly,zlavy,mrsPredOut,trzMonths:[...trzMon].sort(),recs,checks:{mrsPredOut,otherMon,incS,sumOb,unkZad,skipTyp,skipKl,typFilter:(V.th!=null&&V.tc!=null),lostPred,tlacCount:tlac.length,missingV:hv.missing,missingT:ht.missing}};
 }
 
 
@@ -981,7 +991,7 @@ function renderClose(){
 }
 
 /* ---------- navigation ---------- */
-const PAGES={ov:'Prehľad',kat:'Hmotnostné kategórie',kl:'Klienti',ob:'Obchodníci',tz:'Tlač letákov a zahraničie',pl:'Plán',upl:'Nahrať mesiac',ex:'Export',set:'Nastavenia'};
+const PAGES={ov:'Prehľad',kat:'Hmotnostné kategórie',kl:'Klienti',ob:'Obchodníci',ko:'Kontroly',zl:'Zľavy',tz:'Tlač letákov a zahraničie',pl:'Plán',upl:'Nahrať mesiac',ex:'Export',set:'Nastavenia'};
 let tab = 'upl';
 function go(t){ tab=t; render(); window.scrollTo({top:0}); }
 $$('#rail button').forEach(b=>b.onclick=()=>go(b.dataset.tab));
@@ -993,10 +1003,10 @@ function years(){ const ys=new Set(Object.values(store.months).map(m=>m.rok)); r
 function savedMonths(y){ return Object.values(store.months).filter(m=>m.rok===y).map(m=>m.mes).sort((a,b)=>a-b); }
 function periodText(){ return range? `${MONTHS[range.from-1]}${range.to!==range.from?' – '+MONTHS[range.to-1]:''} ${range.y}` : `celý rok ${ledYear}`; }
 function renderLedger(){
-  const show=['ov','kat','kl','ob'].includes(tab);
+  const show=['ov','kat','kl','ob','ko','zl'].includes(tab);
   $('#perBar').classList.toggle('hide',!show); $('#topFilt').classList.toggle('hide',!show);
   $$('#rail button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  ['upl','ov','kat','kl','ob','pl','ex','set'].forEach(x=>$('#t-'+x).classList.toggle('hide',x!==tab));
+  ['upl','ov','kat','kl','ob','ko','zl','pl','ex','set'].forEach(x=>$('#t-'+x).classList.toggle('hide',x!==tab));
   $('#pgTitle').textContent=PAGES[tab];
   if(!show) return;
   const ys=years(); if(!ys.length) ys.push(ledYear); if(!ys.includes(ledYear)) ledYear=ys[ys.length-1];
@@ -1032,7 +1042,7 @@ function renderFilters(){
   $('#fGr').onchange=()=>{ fGr.clear(); if($('#fGr').value) fGr.add($('#fGr').value); render(); };
   $('#fGran').innerHTML=[['wk','Týždne'],['mo','Mesiace']].map(([v,l])=>{ const off=v==='wk'&&fSv.has('TLAC'); return `<button data-v="${v}" class="${gran===v?'on':''}" ${off?'disabled title="Tlač letákov nemá týždne – zobrazuje sa po mesiacoch" style="opacity:.45"':''}>${l}</button>`; }).join('');
   $('#fGran').querySelectorAll('button').forEach(b=>b.onclick=()=>{ gran=b.dataset.v; render(); });
-  $('#fGran').style.display = tab==='kat'? 'none' : ''; $('#fGran').previousElementSibling.style.display = tab==='kat'? 'none' : '';
+  $('#fGran').style.display = (tab==='kat'||tab==='ko'||tab==='zl')? 'none' : ''; $('#fSv').style.display=(tab==='ko'||tab==='zl')? 'none' : ''; $('#fGran').previousElementSibling.style.display = tab==='kat'? 'none' : '';
   const nAct=fSv.size+fGr.size; const fc=$('#fClear'); fc.classList.toggle('hide',!nAct); fc.textContent=`Zrušiť filtre (${nAct})`;
   fc.onclick=()=>{fSv.clear();fGr.clear();render();};
 }
@@ -1088,7 +1098,7 @@ function paintMulti(){ const box=$('#resMulti'); if(!result||result.months.lengt
   $('#btnSaveAll').onclick=()=>{ const ex=both.filter(m=>store.months[mkey(Math.floor(m/100),m%100)]);
     if(ex.length && !confirm(`Už uložené: ${ex.map(monLab).join(', ')}. Prepísať ich?`)) return;
     let n=0; for(const m of both){ const y=Math.floor(m/100), mo=m%100; try{ const r=processMonth(files.V.rows,files.T.rows,cfg(),{rok:y,mes:mo});
-      store.months[mkey(y,mo)]={chkOk:Math.abs(r.checks.incS-(r.checks.mrsPredOut||0)-r.checks.sumOb)<0.05,rok:y,mes:mo,recs:r.recs,ord:r.ord||[],akcie:r.akcie||[],tlac:r.tlacDet||[],zahr:r.zahrDet||[],savedAt:new Date().toISOString(),files:{v:files.V.name,t:files.T.name}}; n++; }catch(e){ toast(monLab(m)+': '+e.message); } }
+      store.months[mkey(y,mo)]={chkOk:Math.abs(r.checks.incS-(r.checks.mrsPredOut||0)-r.checks.sumOb)<0.05,rok:y,mes:mo,recs:r.recs,ord:r.ord||[],akcie:r.akcie||[],kontroly:r.kontroly||[],zlavy:r.zlavy||[],tlac:r.tlacDet||[],zahr:r.zahrDet||[],savedAt:new Date().toISOString(),files:{v:files.V.name,t:files.T.name}}; n++; }catch(e){ toast(monLab(m)+': '+e.message); } }
     if(saveStore()){ ledYear=Math.floor(both[both.length-1]/100); savedPopup(n===1?'1 mesiac je uložený':`Uložené mesiace: ${n}`,[both.map(m=>MONTHS[m%100-1]+' '+Math.floor(m/100)).join(', '), FB.on? 'Dáta sú uložené v cloude – kolegovia ich vidia hneď.' : 'Dáta sú uložené v tomto prehliadači.']); render(); } };
 }
 
@@ -1134,7 +1144,7 @@ function grpSelect(kl,val){ return `<select data-kl="${esc(kl)}"><option value="
 function bindGrpSelects(root,after){ root.querySelectorAll('select[data-kl]').forEach(s=>s.onchange=()=>{ const k=s.dataset.kl; if(s.value) cfg().clients[k]=s.value; else delete cfg().clients[k]; saveStore(); after&&after(); }); }
 $('#btnSave').onclick=()=>{ if(!result) return; const y=+$('#resRok').value, m=+$('#resMes').value, k=mkey(y,m);
   if(store.months[k] && !confirm(`${MONTHS[m-1]} ${y} je už uložený. Prepísať?`)) return;
-  store.months[k]={chkOk:Math.abs(result.checks.incS-(result.checks.mrsPredOut||0)-result.checks.sumOb)<0.05,rok:y,mes:m,recs:result.recs,ord:result.ord||[],akcie:result.akcie||[],tlac:result.tlacDet||[],zahr:result.zahrDet||[],savedAt:new Date().toISOString(),files:{v:files.V.name,t:files.T.name}};
+  store.months[k]={chkOk:Math.abs(result.checks.incS-(result.checks.mrsPredOut||0)-result.checks.sumOb)<0.05,rok:y,mes:m,recs:result.recs,ord:result.ord||[],akcie:result.akcie||[],kontroly:result.kontroly||[],zlavy:result.zlavy||[],tlac:result.tlacDet||[],zahr:result.zahrDet||[],savedAt:new Date().toISOString(),files:{v:files.V.name,t:files.T.name}};
   if(saveStore()){ ledYear=y; const s=sumRecs(result.recs,r=>inSpolu(r.sv)); savedPopup(`${MONTHS[m-1]} ${y} je uložený`,[`Neadresné doručovanie: ${fmt(s.ob)} € · ${fmt(s.pk)} ks`, FB.on? 'Dáta sú uložené v cloude – kolegovia ich vidia hneď.' : 'Dáta sú uložené v tomto prehliadači.']); render(); } };
 
 /* ---------- aggregation helpers ---------- */
@@ -2279,6 +2289,45 @@ function klWeekModal(kl,y,w,o){
   ov.querySelectorAll('[data-x]').forEach(x=>x.onclick=()=>ov.remove()); ov.onclick=e=>{ if(e.target===ov) ov.remove(); };
 }
 
+
+/* ---------- Kontroly a Zľavy (z reportu tržieb) ---------- */
+const kzOpen={ko:new Set(),zl:new Set()};
+function kzData(kind){ const y= range? range.y : ledYear; const out=[]; let old=[];
+  for(const mo of Object.values(store.months)){ if(mo.rok!==y) continue; if(range&&(mo.mes<range.from||mo.mes>range.to)) continue;
+    const arr= kind==='ko'? mo.kontroly : mo.zlavy; if(!arr){ old.push(MONTHS[mo.mes-1]); continue; }
+    arr.forEach(x=>{ const g=cfg().clients[x.kl]||'NEZARADENÉ'; if(fGr.size&&!fGr.has(g)) return; out.push({...x,g,mes:mo.mes,rok:mo.rok}); }); }
+  return {rows:out,old,y}; }
+function renderKZ(kind){
+  const box=$(kind==='ko'?'#koBox':'#zlBox'); const {rows,old,y}=kzData(kind); const isK=kind==='ko';
+  const title= isK? 'Kontroly' : 'Zľavy'; const sum=a=>a.reduce((s,x)=>s+(+x.suma||0),0), cnt=a=>a.reduce((s,x)=>s+(+x.pocet||0),0);
+  const help= isK? 'Kontroly distribúcie z reportu tržieb (stĺpce Kontrola – Popis, Počet, Suma). Klient KOLOS sa nezapočítava. Kliknutím na klienta zobrazíte jednotlivé kontroly.' : 'Zľavy z reportu tržieb (stĺpec Zľava – Suma) – koľko zliav sme klientom v období poskytli. Klient KOLOS sa nezapočítava. Kliknutím na klienta zobrazíte jednotlivé zľavy po materiáloch.';
+  const K={}; rows.forEach(x=>{ const o=(K[x.kl]??={kl:x.kl,g:x.g,obch:new Set(),rows:[]}); o.rows.push(x); if(x.obch) o.obch.add(x.obch); });
+  const KL=Object.values(K).sort((a,b)=> isK? sum(b.rows)-sum(a.rows) : sum(a.rows)-sum(b.rows));
+  const O={}; rows.forEach(x=>{ const k=x.obch||'(neuvedený)'; const o=(O[k]??={o:k,kl:new Set(),rows:[]}); o.kl.add(x.kl); o.rows.push(x); });
+  const op=kzOpen[kind];
+  let h=`<div class="card"><div class="row"><h3 style="margin:0">${title} – ${periodText()}${HELP(help)}</h3><span class="sp"></span><button class="btn small" id="kzExp_${kind}">Stiahnuť (xlsx)</button></div>
+    <div class="klSum"><div><span>${isK?'Počet kontrol':'Počet zliav'}</span><b>${fmt(isK?cnt(rows):rows.length)}</b></div><div><span>${isK?'Suma kontrol':'Zľavy spolu'}</span><b>${fmt(sum(rows),2)} €</b></div><div><span>Klienti</span><b>${KL.length}</b></div><div><span>Obchodníci</span><b>${Object.keys(O).length}</b></div></div>
+    ${old.length?`<p class="small" style="color:#8a5a00">Mesiace bez údajov (uložené pred touto funkciou): ${old.join(', ')} – nahrajte ich znova.</p>`:''}
+    <div class="scroll"><table class="tbl kzT"><tr><th style="text-align:left">Klient</th><th style="text-align:left">Skupina</th><th style="text-align:left">Obchodník</th>${isK?'<th>Počet kontrol</th>':'<th>Počet</th><th style="text-align:left">Materiály</th>'}<th>Suma €</th></tr>`;
+  if(!KL.length) h+=`<tr><td colspan="6" class="muted">V zvolenom období nie sú žiadne ${isK?'kontroly':'zľavy'}.</td></tr>`;
+  for(const k of KL){ const o=op.has(k.kl);
+    h+=`<tr class="katrow ${o?'top3':''}" data-kz="${esc(k.kl)}"><td style="text-align:left"><span style="display:inline-block;width:14px;color:var(--muted)">${o?'▾':'▸'}</span>${esc(k.kl)}</td><td style="text-align:left" class="muted">${esc(k.g)}</td><td style="text-align:left">${esc([...k.obch].join(', '))}</td>${isK?`<td>${fmt(cnt(k.rows))}</td>`:`<td>${k.rows.length}</td><td style="text-align:left" class="muted">${esc([...new Set(k.rows.map(x=>x.mat))].slice(0,3).join(', '))}${new Set(k.rows.map(x=>x.mat)).size>3?' …':''}</td>`}<td><b>${fmt(sum(k.rows),2)}</b></td></tr>`;
+    if(o) k.rows.sort((a,b)=>a.mes-b.mes||String(a.blok).localeCompare(b.blok)).forEach(x=>{ h+=`<tr class="subrow"><td style="text-align:left" colspan="2"><span class="klr">${MONTHS[x.mes-1].slice(0,3)} · blok ${esc(x.blok)} · zák. ${esc(x.zak)}</span></td><td style="text-align:left">${esc(x.obch||'')}</td>${isK?`<td style="text-align:right">${esc(x.popis)} · <b>${fmt(x.pocet)}</b></td>`:`<td>${fmt(x.pocet)}</td><td style="text-align:left">${esc(x.mat)}${x.hm?` <span class="muted">(${fmt(x.hm,0)} g)</span>`:''}</td>`}<td>${fmt(x.suma,2)}</td></tr>`; }); }
+  if(KL.length) h+=`<tr class="tot"><td style="text-align:left">Spolu</td><td></td><td></td>${isK?`<td>${fmt(cnt(rows))}</td>`:`<td>${rows.length}</td><td></td>`}<td>${fmt(sum(rows),2)}</td></tr>`;
+  h+=`</table></div></div>
+  <div class="card"><h3 style="margin:0 0 8px">${title} po obchodníkoch</h3><div class="scroll"><table class="tbl"><tr><th style="text-align:left">Obchodník</th><th>Klienti</th><th>${isK?'Počet kontrol':'Počet zliav'}</th><th>Suma €</th><th>Podiel</th></tr>
+    ${Object.values(O).sort((a,b)=> Math.abs(sum(b.rows))-Math.abs(sum(a.rows))).map(o=>`<tr><td style="text-align:left">${esc(o.o)}</td><td>${o.kl.size}</td><td>${fmt(isK?cnt(o.rows):o.rows.length)}</td><td><b>${fmt(sum(o.rows),2)}</b></td><td>${pct(sum(o.rows),sum(rows))}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">–</td></tr>'}</table></div></div>`;
+  box.innerHTML=h;
+  box.querySelectorAll('[data-kz]').forEach(tr=>tr.onclick=()=>{ const k=tr.dataset.kz; op.has(k)?op.delete(k):op.add(k); renderKZ(kind); });
+  $('#kzExp_'+kind).onclick=async()=>{ const head= isK? ['Mesiac','Blok','Zákazka','Klient','Skupina','Obchodník','Popis kontroly','Počet','Suma €'] : ['Mesiac','Blok','Zákazka','Klient','Skupina','Obchodník','Materiál','Hmotnosť (g)','Počet','Suma €'];
+    const cols= isK? [{h:'Mesiac',w:12,k:'txt'},{h:'Blok',w:9,k:'txt'},{h:'Zákazka',w:10,k:'txt'},{h:'Klient',w:36,k:'txt',b:true},{h:'Skupina',w:20,k:'txt',muted:true},{h:'Obchodník',w:20,k:'txt'},{h:'Popis kontroly',w:34,k:'txt'},{h:'Počet',w:9,k:'int'},{h:'Suma',w:12,k:'eur',b:true}]
+      : [{h:'Mesiac',w:12,k:'txt'},{h:'Blok',w:9,k:'txt'},{h:'Zákazka',w:10,k:'txt'},{h:'Klient',w:36,k:'txt',b:true},{h:'Skupina',w:20,k:'txt',muted:true},{h:'Obchodník',w:20,k:'txt'},{h:'Materiál',w:34,k:'txt'},{h:'Hmotnosť (g)',w:12,k:'int'},{h:'Počet',w:9,k:'int'},{h:'Suma',w:12,k:'eur',b:true}];
+    const bl=rows.slice().sort((a,b)=>a.mes-b.mes||a.kl.localeCompare(b.kl,'sk')).map(x=>({t:'row',v: isK? [MONTHS[x.mes-1]+' '+x.rok,x.blok,x.zak,x.kl,x.g,x.obch,x.popis,x.pocet,x.suma] : [MONTHS[x.mes-1]+' '+x.rok,x.blok,x.zak,x.kl,x.g,x.obch,x.mat,x.hm,x.pocet,x.suma]}));
+    bl.push({t:'tot',v: isK? ['Spolu','','','','','','',cnt(rows),sum(rows)] : ['Spolu','','','','','','','',cnt(rows),sum(rows)]});
+    const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,xsBuild(title+' – '+periodText(),'Zdroj: report tržieb, bez klienta KOLOS',cols,bl),title);
+    await saveFile(`Neadreska_${isK?'kontroly':'zlavy'}_${y}${range?'-'+String(range.from).padStart(2,'0')+(range.to!==range.from?'_'+String(range.to).padStart(2,'0'):''):''}.xlsx`,wbToBlob(wb)); };
+}
+
 /* ---------- downloads ---------- */
 let dlNs; async function getDl(){ if(dlNs!==undefined) return dlNs; try{ dlNs = window.claude&&window.claude.use? await window.claude.use('downloads') : null; }catch(e){ dlNs=null; } return dlNs; }
 async function saveFile(name, data){ const dl=await getDl(); const blob= data instanceof Blob? data : new Blob([data]);
@@ -2437,7 +2486,7 @@ function bpWeeklyWorkbook(recsIn){
   for(const r of rs){ const kat=r.kat??0; const key=[r.g,r.kl,kat].join('\u0001'); let o=R.get(key); if(!o){ o={g:r.g,kl:r.kl,kat,v:{}}; R.set(key,o); }
     const m=r.rok*100+r.mes; for(const k of [m+'|'+bk(r.blok), m+'|CELKOM', 'TOT']){ const x=(o.v[k]??={ob:0,mz:0,ms:0,pk:0}); x.ob+=r.ob; x.mz+=r.ob-r.nc; x.ms+=r.ob-r.ns; x.pk+=r.pk; } }
   const rows=[...R.values()].sort((a,b)=> zar(a.g).localeCompare(zar(b.g),'sk') || a.g.localeCompare(b.g,'sk') || a.kl.localeCompare(b.kl,'sk') || (a.kat||999)-(b.kat||999));
-  const FX=5, BW=4, T0=FX, D0=FX+BW; // fixné stĺpce A–E, blok = Obrat, Marža, Marža (S), Pokrytie
+  const FX=7, BW=4, T0=FX, D0=FX+BW; // fixné stĺpce A–G, blok = Obrat, Marža, Marža (S), Pokrytie
   const NC=D0+cols.length*BW; const aoa=[]; const sty={}; const merges=[];
   const S=(r,c,s)=>{ sty[r+','+c]=s; };
   const per= wModeV==='all'? 'všetky uložené mesiace' : wPeriodLabel();
@@ -2447,10 +2496,12 @@ function bpWeeklyWorkbook(recsIn){
   const fmtE='_-* #,##0\\ "€"_-;\\-* #,##0\\ "€"_-;_-* "-"??\\ "€"_-;_-@_-', fmtK='_-* #,##0_-;\\-* #,##0_-;_-* "-"??_-;_-@_-', fmtC='#,##0.00\\ "€"';
   const HB=['Obrat','Marža','Marža (S)','Pokrytie'];
   const colInfo=i=> i>=D0? cols[Math.floor((i-D0)/BW)] : null;
+  { let k=0, lm=null; cols.forEach(c=>{ if(c.m!==lm){ k=0; lm=c.m; } if(!c.celkom){ c.alt=k%2; k++; } }); }
+  const BLK={hd:['C9D5F6','E4EAFB'], h3:['DCE4F9','EEF2FC'], dt:['EDF2FD','FFFFFF']}; // striedanie blokov v modrom tóne
   const monthStart=i=>{ const c=colInfo(i); return c && (i-D0)%BW===0 && c.first; };
   const r1=Array(NC).fill(null), r2=Array(NC).fill(null), r3=Array(NC).fill(null);
   r1[0]='Neadreska – realita po týždňoch'; r1[T0]=per; merges.push({s:{r:0,c:T0},e:{r:0,c:T0+BW-1}});
-  ['Zaradenie','Klient','Material PLAN','Kategória','Cenník / 1000 ks'].forEach((h,i)=>r3[i]=h);
+  ['Zaradenie','Klient','Material PLAN','Kategória','Skutočný náklad / 1000 ks','klient + hmotnosť','Cenník / 1000 ks'].forEach((h,i)=>r3[i]=h);
   r2[T0]='REALITA SPOLU'; merges.push({s:{r:1,c:T0},e:{r:1,c:T0+BW-1}});
   HB.forEach((h,i)=>r3[T0+i]=h);
   let lastM=null, mStart=D0;
@@ -2459,7 +2510,7 @@ function bpWeeklyWorkbook(recsIn){
     HB.forEach((h,k)=>r3[cc+k]=h); });
   if(lastM!=null) merges.push({s:{r:0,c:mStart},e:{r:0,c:NC-1}});
   aoa.push(r1,r2,r3);
-  const vBorder=i=> monthStart(i)? ln(C.logo,'medium') : (i===T0? ln(C.navy,'medium') : ln());
+  const vBorder=i=> monthStart(i)? ln(C.logo,'medium') : (i===T0? ln(C.navy,'medium') : (i>=D0&&(i-D0)%BW===0? ln('9FB1EC') : ln()));
   for(let i=0;i<NC;i++){
     const ci=colInfo(i);
     if(i<T0) S(0,i,{font:F({b:true,sz:i===0?14:10,c:C.navy}),alignment:{horizontal:'left',vertical:'center'}});
@@ -2467,34 +2518,35 @@ function bpWeeklyWorkbook(recsIn){
     else S(0,i,{font:F({b:true,sz:11,c:C.white}),fill:{fgColor:{rgb:C.logo}},alignment:{horizontal:'center',vertical:'center'},border:{left:vBorder(i)}});
     if(i<T0) S(1,i,{font:F({c:C.muted}),alignment:{horizontal:'left'}});
     else if(i<D0) S(1,i,{font:F({b:true,c:C.navy}),fill:{fgColor:{rgb:C.tot}},alignment:{horizontal:'center'},border:{left:vBorder(i)}});
-    else S(1,i,{font:F({b:true,c: ci.celkom? C.white : C.navy}),fill:{fgColor:{rgb: ci.celkom? C.navy : C.hl}},alignment:{horizontal:'center'},border:{left:vBorder(i),bottom:ln(C.white)}});
-    const hdrFill= i<T0? C.tile : (i<D0? C.tot : (ci.celkom? C.hl : C.tile));
+    else S(1,i,{font:F({b:true,c: ci.celkom? C.white : C.navy}),fill:{fgColor:{rgb: ci.celkom? C.navy : BLK.hd[ci.alt||0]}},alignment:{horizontal:'center'},border:{left:vBorder(i),bottom:ln(C.white)}});
+    const hdrFill= i===4? 'FFE7A3' : i<T0? C.tile : (i<D0? C.tot : (ci.celkom? C.hl : BLK.h3[ci.alt||0]));
     S(2,i,{font:F({b:true,c:C.muted,sz:9}),fill:{fgColor:{rgb:hdrFill}},alignment:{horizontal:i<T0?'left':'right',vertical:'center',wrapText:true},border:{bottom:ln(C.logo,'medium'),left:vBorder(i)}});
   }
   S(1,0,{font:F({c:C.muted}),alignment:{horizontal:'left'}});
   const valRow=(v)=>{ const out=[]; const t=v['TOT']||{ob:0,mz:0,ms:0,pk:0}; out.push(t.ob,t.mz,t.ms,t.pk); cols.forEach(col=>{ const x=v[col.m+'|'+col.blk]||{ob:0,mz:0,ms:0,pk:0}; out.push(x.ob,x.mz,x.ms,x.pk); }); return out.map(n=>Math.round(n*100)/100); };
+  const realC=v=>{ const x=v['TOT']; return x&&x.pk? Math.round((x.ob-x.ms)/x.pk*1000*100)/100 : null; };
   const addSum=(acc,v)=>{ for(const [k,x] of Object.entries(v)){ const a=(acc[k]??={ob:0,mz:0,ms:0,pk:0}); a.ob+=x.ob; a.mz+=x.mz; a.ms+=x.ms; a.pk+=x.pk; } };
   const styleData=(ri,kind)=>{ for(let i=0;i<NC;i++){ const isNum=i>=T0; const mi=(i-T0)%BW; const ci=colInfo(i);
       let fill=null, font, border={bottom:ln(), left:vBorder(i)};
       if(kind==='row'){
         font=F({b:isNum&&mi===0, c: isNum&&mi===3? C.muted : (i===0? C.muted : C.ink)});
-        if(i===0) fill=C.tile; else if(i>=T0&&i<D0) fill=C.tot; else if(ci&&ci.celkom) fill=C.soft;
+        if(i===0) fill=C.tile; else if(i>=T0&&i<D0) fill=C.tot; else if(ci&&ci.celkom) fill='E4EAFB'; else if(ci) fill=BLK.dt[ci.alt||0];
       } else if(kind==='sub'){
         font=F({b:true,c:C.navy}); fill=C.hl; border={top:ln(C.logo),bottom:ln(C.logo),left:vBorder(i)};
       } else { font=F({b:true,sz:11,c:C.white}); fill=C.navy; border={left: monthStart(i)? ln(C.logo,'medium') : ln(C.navy)}; }
       const s={font,border}; if(fill) s.fill={fgColor:{rgb:fill}};
-      if(isNum) s.numFmt= mi===3? fmtK : fmtE; if(i===4) s.numFmt=fmtC; if(i===3) s.alignment={horizontal:'center'};
+      if(isNum) s.numFmt= mi===3? fmtK : fmtE; if(i===6||i===4) s.numFmt=fmtC; if(i===3) s.alignment={horizontal:'center'}; if(i===4&&kind==='row'){ s.font=F({b:true,c:C.navy}); s.fill={fgColor:{rgb:'FFF6D6'}}; }
       S(ri,i,s); } };
   let curG=null, gAcc={}, total={};
-  const flushG=()=>{ if(curG==null) return; const ri=aoa.length; aoa.push([zar(curG),null,curG+' – spolu',null,null,...valRow(gAcc)]); styleData(ri,'sub'); };
+  const flushG=()=>{ if(curG==null) return; const ri=aoa.length; aoa.push([zar(curG),null,curG+' – spolu',null,realC(gAcc),null,null,...valRow(gAcc)]); styleData(ri,'sub'); };
   for(const o of rows){ if(o.g!==curG){ flushG(); curG=o.g; gAcc={}; }
-    const ri=aoa.length; aoa.push([zar(o.g),o.kl,o.g,o.kat||null,cenOf(o.kat),...valRow(o.v)]); styleData(ri,'row'); addSum(gAcc,o.v); addSum(total,o.v); }
+    const ri=aoa.length; aoa.push([zar(o.g),o.kl,o.g,o.kat||null,realC(o.v),o.kl+(o.kat||''),cenOf(o.kat),...valRow(o.v)]); styleData(ri,'row'); addSum(gAcc,o.v); addSum(total,o.v); }
   flushG();
-  const ri=aoa.length; aoa.push(['Celkový súčet',null,null,null,null,...valRow(total)]); styleData(ri,'tot');
+  const ri=aoa.length; aoa.push(['Celkový súčet',null,null,null,realC(total),null,null,...valRow(total)]); styleData(ri,'tot');
   const ws=XLSX.utils.aoa_to_sheet(aoa);
   for(const [k,s] of Object.entries(sty)){ const [r,c2]=k.split(',').map(Number); const a=XLSX.utils.encode_cell({r,c:c2}); if(!ws[a]) ws[a]={t:'s',v:''}; ws[a].s=s; }
   ws['!merges']=merges;
-  ws['!cols']=[{wch:17},{wch:40},{wch:20},{wch:9},{wch:12},{wch:12},{wch:11},{wch:11},{wch:12},...cols.flatMap(()=>[{wch:10},{wch:10},{wch:10},{wch:11}])];
+  ws['!cols']=[{wch:17},{wch:40},{wch:20},{wch:9},{wch:13},{wch:26},{wch:12},{wch:12},{wch:11},{wch:11},{wch:12},...cols.flatMap(()=>[{wch:10},{wch:10},{wch:10},{wch:11}])];
   ws['!rows']=[{hpt:26},{hpt:18},{hpt:20}];
   const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Realita po týždňoch'); return wb;
 }
@@ -2557,7 +2609,7 @@ $('#exclAdd').onclick=()=>{ const v=$('#exclIn').value.trim(); if(!v) return; if
 $('#excAdd').onclick=()=>{cfg().exceptions.push(['','',GROUPS[0]]);saveStore();renderSettings();};
 
 /* ---------- render ---------- */
-function render(){ renderLedger(); renderDataStat(); if(tab==='upl'){ renderResult(); } if(tab==='ov'){ renderOverview(); renderOvTable(); renderOvTlac(); } if(tab==='kat') renderKat(); if(tab==='kl') renderClients(); if(tab==='ob') renderObch();  if(tab==='pl') renderPlan(); if(tab==='ex') renderExport(); if(tab==='set') renderSettings(); }
+function render(){ renderLedger(); renderDataStat(); if(tab==='upl'){ renderResult(); } if(tab==='ov'){ renderOverview(); renderOvTable(); renderOvTlac(); } if(tab==='kat') renderKat(); if(tab==='kl') renderClients(); if(tab==='ob') renderObch(); if(tab==='ko'||tab==='zl') renderKZ(tab);  if(tab==='pl') renderPlan(); if(tab==='ex') renderExport(); if(tab==='set') renderSettings(); }
 render();
 </script>
 </body>
