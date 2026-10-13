@@ -316,7 +316,8 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
 
 .klSum{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
 .klSum>div{background:var(--tile);border-radius:10px;padding:8px 12px}
-.klSum span{display:block;font-size:11px;color:var(--muted);font-weight:600}.klSum b{color:var(--navy);font-size:13.5px}
+.klSum>div>span{display:block;font-size:11px;color:var(--muted);font-weight:600}
+.klSum b{white-space:nowrap}.klSum b{color:var(--navy);font-size:13.5px}
 .mGrid .d.miss{outline:2px dashed #B3261E;outline-offset:-2px}
 .mGrid .d.dev{box-shadow:inset 0 0 0 2px #B3261E}
 .klCmp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -462,7 +463,7 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
   <div id="ovBody">
     <div class="grid g6 hide" id="ovKpi" style="margin-bottom:16px"></div>
     <div class="card ovT" id="ovTab"></div>
-    <div class="card" id="predCard"><div class="row"><h3 style="margin:0">Schránky a predajne<span class="hlp" data-help="Schránky a predajne – kadiaľ išli letáky: vlastnou sieťou Cromwell, Kolosom alebo poštou. Obrat pošty a Kolosu = suma MRS z reportu tržieb, náklad = skutočná faktúra dodávateľa. Vlastná sieť = zvyšok obratu, náklad podľa nákladových cien.">i</span></h3><span class="small muted" id="predPer"></span></div>
+    <div class="card" id="predCard"><div class="row"><h3 style="margin:0">Schránky, predajne a zahraničie<span class="hlp" data-help="Schránky, predajne a zahraničie – kadiaľ išli letáky: vlastnou sieťou Cromwell, Kolosom alebo poštou. Obrat pošty a Kolosu = suma MRS z reportu tržieb, náklad = skutočná faktúra dodávateľa. Vlastná sieť = zvyšok obratu, náklad podľa nákladových cien.">i</span></h3><span class="small muted" id="predPer"></span></div>
       <p class="small muted" style="margin:6px 0 0">Obrat pošty a Kolosu = suma MRS fakturovaná klientovi, náklad = skutočný náklad dodávateľa. Vlastná sieť = zvyšok obratu, náklad podľa nákladových cien gramáží. Obraty sú po pomernom zmluvnom bonuse.</p>
       <div class="scroll" style="margin-top:6px"><table class="tbl" id="predTbl"></table></div>
       <p class="small muted hide" id="predOld" style="margin-bottom:0">Časť mesiacov bola uložená pred doplnením obratov po kanáloch – nahrajte ich znova a prepíšte.</p></div>
@@ -1237,9 +1238,11 @@ function renderOverview(){
         h+=hdr('Predajne')+row('Vlastná sieť Cromwell <span class="small muted">náklad podľa cenníka</span>',own,ks,oown,nown,cL)+row('Poslané Kolosom',ko,ks,oko,nko,cK)+row('Podané na pošte (SP)',sp,ks,osp,nsp,cP)+row('Predajne spolu',ks,ks,oown+oko+osp,nown+nko+nsp,null,'tot');
         ext.k+=sp+ko; ext.o+=osp+oko; ext.n+=nsp+nko; }
       if(showS&&showP){
-        const sc=flt('SCH'), pr=flt('PRED'); const ks=sum(sc,'pk')+sum(pr,'pk'), ob=sum(sc,'ob')+sum(pr,'ob');
+        const za=flt('ZAHR'); const zk=sum(za,'pk'), zo=sum(za,'ob'), zn=sum(za,'nc');
+        h+=hdr('Zahraničie')+row('Zahraničie <span class="small muted">zadanie zahraničie_CRW</span>',zk,zk,zo,zn,'#9B5DE5','tot');
+        const sc=flt('SCH'), pr=flt('PRED'); const ks=sum(sc,'pk')+sum(pr,'pk')+zk, ob=sum(sc,'ob')+sum(pr,'ob')+zo;
         const nS=sum(sc,'nc')+sum(sc,'sspn')+sum(sc,'sprn'), nP=sum(pr,'nown')+sum(pr,'nko')+sum(pr,'nsp');
-        h+=`<tr><td colspan="9" style="padding:6px"></td></tr>`+row('<b>Zrátané schránky a predajne</b>',ks,0,ob,nS+nP,null,'tot grand'); }
+        h+=`<tr><td colspan="9" style="padding:6px"></td></tr>`+row('<b>Zrátané schránky, predajne a zahraničie</b>',ks,0,ob,nS+nP+zn,null,'tot grand'); }
       $('#predTbl').innerHTML=h; $('#predOld').classList.toggle('hide',!old); } }
   // KPIs
   const t=sumRecs(recs);
@@ -1709,7 +1712,7 @@ function xsBuild(title,sub,cols,blocks,opts={}){
   const F=(o={})=>({name:'Calibri',sz:o.sz||10,bold:!!o.b,italic:!!o.i,color:{rgb:o.c||C.ink}});
   const ln={style:'thin',color:{rgb:C.line}};
   const aoa=[[title],[sub],[]]; const st=[]; const S=(r,c,s)=>st.push([r,c,s]);
-  const fmtOf=k=> k==='eur'?'#,##0.00\\ "€";-#,##0.00\\ "€";"–"' : k==='int'?'#,##0;-#,##0;"–"' : k==='pct'?'0.0%;-0.0%;"–"' : undefined;
+  const fmtOf=k=> k==='eur'?'#,##0.00\\ "€";[Red]-#,##0.00\\ "€";"–"' : k==='int'?'#,##0;-#,##0;"–"' : k==='pct'?'0.0%;-0.0%;"–"' : undefined;
   let r=3;
   if(opts.kpis){ opts.kpis.forEach(([l,v,k])=>{ aoa.push([l,v]); S(r,0,{font:F({c:C.muted,b:true}),fill:{fgColor:{rgb:C.tile}},border:{bottom:{style:'thin',color:{rgb:C.white}}}}); S(r,1,{font:F({b:true,sz:12,c:C.navy}),fill:{fgColor:{rgb:C.tile}},numFmt:fmtOf(k),alignment:{horizontal:'right'},border:{bottom:{style:'thin',color:{rgb:C.white}}}}); r++; }); aoa.push([]); r++; }
   const hr=r; aoa.push(cols.map(c=>c.h)); cols.forEach((c,i)=>S(r,i,{font:F({b:true,c:C.white}),fill:{fgColor:{rgb:C.navy}},alignment:{horizontal:c.k&&c.k!=='txt'?'right':'left',vertical:'center',wrapText:true},border:{bottom:{style:'medium',color:{rgb:C.logo}}}})); r++;
@@ -2293,6 +2296,7 @@ function klWeekModal(kl,y,w,o){
 
 /* ---------- Kontroly a Zľavy (z reportu tržieb) ---------- */
 const kzOpen={ko:new Set(),zl:new Set()};
+const negR=v=> (+v<0? `<span style="color:#B3261E">${fmt(v,2)}</span>` : fmt(v,2));
 function kzData(kind){ const y= range? range.y : ledYear; const out=[]; let old=[];
   for(const mo of Object.values(store.months)){ if(mo.rok!==y) continue; if(range&&(mo.mes<range.from||mo.mes>range.to)) continue;
     const arr= kind==='ko'? mo.kontroly : mo.zlavy; if(!arr){ old.push(MONTHS[mo.mes-1]); continue; }
@@ -2307,17 +2311,15 @@ function renderKZ(kind){
   const O={}; rows.forEach(x=>{ const k=x.obch||'(neuvedený)'; const o=(O[k]??={o:k,kl:new Set(),rows:[]}); o.kl.add(x.kl); o.rows.push(x); });
   const op=kzOpen[kind];
   let h=`<div class="card"><div class="row"><h3 style="margin:0">${title} – ${periodText()}${HELP(help)}</h3><span class="sp"></span><button class="btn small" id="kzExp_${kind}">Stiahnuť (xlsx)</button></div>
-    <div class="klSum"><div><span>${isK?'Počet kontrol':'Počet zliav'}</span><b>${fmt(isK?cnt(rows):rows.length)}</b></div><div><span>${isK?'Suma kontrol':'Zľavy spolu'}</span><b>${fmt(sum(rows),2)} €</b></div><div><span>Klienti</span><b>${KL.length}</b></div><div><span>Obchodníci</span><b>${Object.keys(O).length}</b></div></div>
+    <div class="klSum"><div><span>${isK?'Počet kontrol':'Počet zliav'}</span><b>${fmt(isK?cnt(rows):rows.length)}</b></div><div><span>${isK?'Suma kontrol':'Zľavy spolu'}</span><b>${negR(sum(rows))} €</b></div><div><span>Klienti</span><b>${KL.length}</b></div><div><span>Obchodníci</span><b>${Object.keys(O).length}</b></div></div>
     ${old.length?`<p class="small" style="color:#8a5a00">Mesiace bez údajov (uložené pred touto funkciou): ${old.join(', ')} – nahrajte ich znova.</p>`:''}
     <div class="scroll"><table class="tbl kzT"><tr><th style="text-align:left">Klient</th><th style="text-align:left">Skupina</th><th style="text-align:left">Obchodník</th>${isK?'<th>Počet kontrol</th>':'<th>Počet</th><th style="text-align:left">Materiály</th>'}<th>Suma €</th></tr>`;
   if(!KL.length) h+=`<tr><td colspan="6" class="muted">V zvolenom období nie sú žiadne ${isK?'kontroly':'zľavy'}.</td></tr>`;
   for(const k of KL){ const o=op.has(k.kl);
-    h+=`<tr class="katrow ${o?'top3':''}" data-kz="${esc(k.kl)}"><td style="text-align:left"><span style="display:inline-block;width:14px;color:var(--muted)">${o?'▾':'▸'}</span>${esc(k.kl)}</td><td style="text-align:left" class="muted">${esc(k.g)}</td><td style="text-align:left">${esc([...k.obch].join(', '))}</td>${isK?`<td>${fmt(cnt(k.rows))}</td>`:`<td>${k.rows.length}</td><td style="text-align:left" class="muted">${esc([...new Set(k.rows.map(x=>x.mat))].slice(0,3).join(', '))}${new Set(k.rows.map(x=>x.mat)).size>3?' …':''}</td>`}<td><b>${fmt(sum(k.rows),2)}</b></td></tr>`;
-    if(o) k.rows.sort((a,b)=>a.mes-b.mes||String(a.blok).localeCompare(b.blok)).forEach(x=>{ h+=`<tr class="subrow"><td style="text-align:left" colspan="2"><span class="klr">${MONTHS[x.mes-1].slice(0,3)} · blok ${esc(x.blok)} · zák. ${esc(x.zak)}</span></td><td style="text-align:left">${esc(x.obch||'')}</td>${isK?`<td style="text-align:right">${esc(x.popis)} · <b>${fmt(x.pocet)}</b></td>`:`<td>${fmt(x.pocet)}</td><td style="text-align:left">${esc(x.mat)}${x.hm?` <span class="muted">(${fmt(x.hm,0)} g)</span>`:''}</td>`}<td>${fmt(x.suma,2)}</td></tr>`; }); }
-  if(KL.length) h+=`<tr class="tot"><td style="text-align:left">Spolu</td><td></td><td></td>${isK?`<td>${fmt(cnt(rows))}</td>`:`<td>${rows.length}</td><td></td>`}<td>${fmt(sum(rows),2)}</td></tr>`;
-  h+=`</table></div></div>
-  <div class="card"><h3 style="margin:0 0 8px">${title} po obchodníkoch</h3><div class="scroll"><table class="tbl"><tr><th style="text-align:left">Obchodník</th><th>Klienti</th><th>${isK?'Počet kontrol':'Počet zliav'}</th><th>Suma €</th><th>Podiel</th></tr>
-    ${Object.values(O).sort((a,b)=> Math.abs(sum(b.rows))-Math.abs(sum(a.rows))).map(o=>`<tr><td style="text-align:left">${esc(o.o)}</td><td>${o.kl.size}</td><td>${fmt(isK?cnt(o.rows):o.rows.length)}</td><td><b>${fmt(sum(o.rows),2)}</b></td><td>${pct(sum(o.rows),sum(rows))}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">–</td></tr>'}</table></div></div>`;
+    h+=`<tr class="katrow ${o?'top3':''}" data-kz="${esc(k.kl)}"><td style="text-align:left"><span style="display:inline-block;width:14px;color:var(--muted)">${o?'▾':'▸'}</span>${esc(k.kl)}</td><td style="text-align:left" class="muted">${esc(k.g)}</td><td style="text-align:left">${esc([...k.obch].join(', '))}</td>${isK?`<td>${fmt(cnt(k.rows))}</td>`:`<td>${k.rows.length}</td><td style="text-align:left" class="muted">${esc([...new Set(k.rows.map(x=>x.mat))].slice(0,3).join(', '))}${new Set(k.rows.map(x=>x.mat)).size>3?' …':''}</td>`}<td><b>${negR(sum(k.rows))}</b></td></tr>`;
+    if(o) k.rows.sort((a,b)=>a.mes-b.mes||String(a.blok).localeCompare(b.blok)).forEach(x=>{ h+=`<tr class="subrow"><td style="text-align:left" colspan="2"><span class="klr">${MONTHS[x.mes-1].slice(0,3)} · blok ${esc(x.blok)} · zák. ${esc(x.zak)}</span></td><td style="text-align:left">${esc(x.obch||'')}</td>${isK?`<td style="text-align:right">${esc(x.popis)} · <b>${fmt(x.pocet)}</b></td>`:`<td>${fmt(x.pocet)}</td><td style="text-align:left">${esc(x.mat)}${x.hm?` <span class="muted">(${fmt(x.hm,0)} g)</span>`:''}</td>`}<td>${negR(x.suma)}</td></tr>`; }); }
+  if(KL.length) h+=`<tr class="tot"><td style="text-align:left">Spolu</td><td></td><td></td>${isK?`<td>${fmt(cnt(rows))}</td>`:`<td>${rows.length}</td><td></td>`}<td>${negR(sum(rows))}</td></tr>`;
+  h+=`</table></div></div>`;
   box.innerHTML=h;
   box.querySelectorAll('[data-kz]').forEach(tr=>tr.onclick=()=>{ const k=tr.dataset.kz; op.has(k)?op.delete(k):op.add(k); renderKZ(kind); });
   $('#kzExp_'+kind).onclick=async()=>{ const head= isK? ['Mesiac','Blok','Zákazka','Klient','Skupina','Obchodník','Popis kontroly','Počet','Suma €'] : ['Mesiac','Blok','Zákazka','Klient','Skupina','Obchodník','Materiál','Hmotnosť (g)','Počet','Suma €'];
@@ -2498,11 +2500,11 @@ function bpWeeklyWorkbook(recsIn){
   const HB=['Obrat','Marža','Marža (S)','Pokrytie'];
   const colInfo=i=> i>=D0? cols[Math.floor((i-D0)/BW)] : null;
   { let k=0, lm=null; cols.forEach(c=>{ if(c.m!==lm){ k=0; lm=c.m; } if(!c.celkom){ c.alt=k%2; k++; } }); }
-  const BLK={hd:['C9D5F6','E4EAFB'], h3:['DCE4F9','EEF2FC'], dt:['EDF2FD','FFFFFF']}; // striedanie blokov v modrom tóne
+  const BLK={hd:['D5D8DF','E4EAFB'], h3:['E3E5EA','EEF2FC'], dt:['F0F1F4','FFFFFF']}; // striedanie blokov v modrom tóne
   const monthStart=i=>{ const c=colInfo(i); return c && (i-D0)%BW===0 && c.first; };
   const r1=Array(NC).fill(null), r2=Array(NC).fill(null), r3=Array(NC).fill(null);
   r1[0]='Neadreska – realita po týždňoch'; r1[T0]=per; merges.push({s:{r:0,c:T0},e:{r:0,c:T0+BW-1}});
-  ['Zaradenie','Klient','Material PLAN','Kategória','Skutočný náklad / 1000 ks','klient + hmotnosť','Cenník / 1000 ks'].forEach((h,i)=>r3[i]=h);
+  ['Zaradenie','Klient','Material PLAN','Kategória','Priem. predajná cena / 1000 ks','Materiál','Nákladová cena / 1000 ks (cenník)'].forEach((h,i)=>r3[i]=h);
   r2[T0]='REALITA SPOLU'; merges.push({s:{r:1,c:T0},e:{r:1,c:T0+BW-1}});
   HB.forEach((h,i)=>r3[T0+i]=h);
   let lastM=null, mStart=D0;
@@ -2525,7 +2527,9 @@ function bpWeeklyWorkbook(recsIn){
   }
   S(1,0,{font:F({c:C.muted}),alignment:{horizontal:'left'}});
   const valRow=(v)=>{ const out=[]; const t=v['TOT']||{ob:0,mz:0,ms:0,pk:0}; out.push(t.ob,t.mz,t.ms,t.pk); cols.forEach(col=>{ const x=v[col.m+'|'+col.blk]||{ob:0,mz:0,ms:0,pk:0}; out.push(x.ob,x.mz,x.ms,x.pk); }); return out.map(n=>Math.round(n*100)/100); };
-  const realC=v=>{ const x=v['TOT']; return x&&x.pk? Math.round((x.ob-x.ms)/x.pk*1000*100)/100 : null; };
+  const matMap=new Map(); { const ms=new Set(rs.map(r=>r.rok*100+r.mes)); for(const mo of Object.values(store.months)){ if(!ms.has(mo.rok*100+mo.mes)) continue; for(const a of (mo.akcie||[])){ const k=a.kl+'\u0001'+(a.kat??0); const s=(matMap.get(k)||new Set()); if(a.mat) s.add(a.mat.trim()); matMap.set(k,s); } } }
+  const matOf=o=>{ const s=matMap.get(o.kl+'\u0001'+(o.kat??0)); return s&&s.size? [...s].join(', ') : ''; };
+  const realC=v=>{ const x=v['TOT']; return x&&x.pk? Math.round(x.ob/x.pk*1000*100)/100 : null; }; // priemerná predajná cena na 1000 ks
   const addSum=(acc,v)=>{ for(const [k,x] of Object.entries(v)){ const a=(acc[k]??={ob:0,mz:0,ms:0,pk:0}); a.ob+=x.ob; a.mz+=x.mz; a.ms+=x.ms; a.pk+=x.pk; } };
   const styleData=(ri,kind)=>{ for(let i=0;i<NC;i++){ const isNum=i>=T0; const mi=(i-T0)%BW; const ci=colInfo(i);
       let fill=null, font, border={bottom:ln(), left:vBorder(i)};
@@ -2541,13 +2545,13 @@ function bpWeeklyWorkbook(recsIn){
   let curG=null, gAcc={}, total={};
   const flushG=()=>{ if(curG==null) return; const ri=aoa.length; aoa.push([zar(curG),null,curG+' – spolu',null,realC(gAcc),null,null,...valRow(gAcc)]); styleData(ri,'sub'); };
   for(const o of rows){ if(o.g!==curG){ flushG(); curG=o.g; gAcc={}; }
-    const ri=aoa.length; aoa.push([zar(o.g),o.kl,o.g,o.kat||null,realC(o.v),o.kl+(o.kat||''),cenOf(o.kat),...valRow(o.v)]); styleData(ri,'row'); addSum(gAcc,o.v); addSum(total,o.v); }
+    const ri=aoa.length; aoa.push([zar(o.g),o.kl,o.g,o.kat||null,realC(o.v),matOf(o),cenOf(o.kat),...valRow(o.v)]); styleData(ri,'row'); addSum(gAcc,o.v); addSum(total,o.v); }
   flushG();
   const ri=aoa.length; aoa.push(['Celkový súčet',null,null,null,realC(total),null,null,...valRow(total)]); styleData(ri,'tot');
   const ws=XLSX.utils.aoa_to_sheet(aoa);
   for(const [k,s] of Object.entries(sty)){ const [r,c2]=k.split(',').map(Number); const a=XLSX.utils.encode_cell({r,c:c2}); if(!ws[a]) ws[a]={t:'s',v:''}; ws[a].s=s; }
   ws['!merges']=merges;
-  ws['!cols']=[{wch:17},{wch:40},{wch:20},{wch:9},{wch:13},{wch:26},{wch:12},{wch:12},{wch:11},{wch:11},{wch:12},...cols.flatMap(()=>[{wch:10},{wch:10},{wch:10},{wch:11}])];
+  ws['!cols']=[{wch:17},{wch:40},{wch:20},{wch:9},{wch:14},{wch:40},{wch:15},{wch:12},{wch:11},{wch:11},{wch:12},...cols.flatMap(()=>[{wch:10},{wch:10},{wch:10},{wch:11}])];
   ws['!rows']=[{hpt:26},{hpt:18},{hpt:20}];
   const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Realita po týždňoch'); return wb;
 }
