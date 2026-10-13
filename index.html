@@ -639,7 +639,7 @@ const DEFAULT_CFG = {
   excludeClients: ['KOLOS, s.r.o.'],
   team: [{n:'Moravčík Peter',lead:true},{n:'Dávidová Zuzana'},{n:'Bucseková Simona'},{n:'Bílek Tadeáš'}],
   cennik: [[6,4.74],[14,7.55],[20,9.15],[30,12.01],[40,15.48],[50,19.72],[60,23.15],[70,26.2],[80,29.16],[90,31.78],[100,34.73],[150,36.57]],
-  exceptions: [['Česká Distribuční SK, s.r.o.','Tesco','Tesco'],['Česká Distribuční SK, s.r.o.','Plus jeden','Plus Jeden Deň']],
+  exceptions: [['Česká Distribuční SK, s.r.o.','Tesco','Tesco'],['Česká Distribuční SK, s.r.o.','Plus jeden','Plus Jeden Deň'],['ZPC Group, s.r.o.','Gazda','Strední klienti']],
   clients: {}
 };
 
@@ -665,7 +665,7 @@ function katOf(cfg, hm){ const w=num(hm); if(!(w>0)) return 0; for (const [lim] 
 function cenaKat(cfg, hm){ const w=num(hm); if(!(w>0)) return 0;
   for (const [lim,c] of cfg.cennik) if (w<=lim) return c; return cfg.cennik[cfg.cennik.length-1][1]; }
 function weekOf(blok){ const m=/^(\d{2})(\d{2})[A-Z]/.exec(str(blok)); return m? +m[2] : null; }
-function excGroup(cfg, kl, mat){ for (const [k,t,g] of cfg.exceptions){ if (k===kl && t && mat.toLowerCase().includes(String(t).toLowerCase())) return g; } return ''; }
+function excGroup(cfg, kl, mat){ const K=String(kl||'').trim().toLowerCase(), Mt=String(mat||'').toLowerCase(); for (const [k,t,g] of cfg.exceptions){ if (String(k).trim().toLowerCase()===K && t && Mt.includes(String(t).toLowerCase())) return g; } return ''; }
 function groupOf(cfg, rec){ if(rec.sv==='ZAHR') return 'Zahraničie'; if(rec.sv==='TLAC') return 'Tlač letákov'; return rec.g0 || cfg.clients[rec.kl] || ''; }
 
 /* rowsV, rowsT = arrays of arrays (sheet_to_json header:1) */
@@ -849,6 +849,7 @@ if(window.Chart) Chart.register({id:'monthBrackets', afterDraw(chart){ const m=c
 /* ---------- state & storage ---------- */
 const LS='neadreska.v1';
 let store={months:{},cfg:null};
+function ensureExc(){ const ex=store.cfg.exceptions=store.cfg.exceptions||[]; for(const e of DEFAULT_CFG.exceptions){ if(!ex.some(x=>String(x[0]).trim().toLowerCase()===String(e[0]).toLowerCase()&&String(x[1]).toLowerCase()===String(e[1]).toLowerCase())) ex.push([...e]); } }
 function loadStore(){ try{ const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.months) store=s; }catch(e){} 
   if(!store.cfg) store.cfg=JSON.parse(JSON.stringify(DEFAULT_CFG)); if(!store.cfg.excludeClients) store.cfg.excludeClients=[...DEFAULT_CFG.excludeClients]; if(!store.cfg.team) store.cfg.team=JSON.parse(JSON.stringify(DEFAULT_CFG.team)); if(!store.cfg.maskExtra) store.cfg.maskExtra=[]; }
 function saveStore(){ let ok=true; try{ localStorage.setItem(LS,JSON.stringify(store)); }catch(e){ ok=false; if(!FB.on) toast('Uloženie v prehliadači zlyhalo: '+e.message); } fbSchedule(); return ok; }
@@ -926,10 +927,10 @@ function fbLoginUi(auth){ return new Promise(res=>{ const ov=document.createElem
   ov.querySelector('#fbSkip').onclick=e=>{ e.preventDefault(); ov.remove(); res(); };
 }); }
 function fbLogout(){ if(!FB.on||!confirm('Odhlásiť sa z cloudu?')) return; firebase.auth().signOut().then(()=>location.reload()); }
-function loadStoreFix(){ if(!store.cfg) store.cfg=JSON.parse(JSON.stringify(DEFAULT_CFG)); if(!store.cfg.excludeClients) store.cfg.excludeClients=[...DEFAULT_CFG.excludeClients]; if(!store.cfg.team) store.cfg.team=JSON.parse(JSON.stringify(DEFAULT_CFG.team)); }
+function loadStoreFix(){ if(!store.cfg) store.cfg=JSON.parse(JSON.stringify(DEFAULT_CFG)); ensureExc(); if(!store.cfg.excludeClients) store.cfg.excludeClients=[...DEFAULT_CFG.excludeClients]; if(!store.cfg.team) store.cfg.team=JSON.parse(JSON.stringify(DEFAULT_CFG.team)); }
 setTimeout(fbInit,0);
 const cfg=()=>store.cfg;
-loadStore();
+loadStore(); ensureExc();
 
 const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
 const fmt=(v,d=0)=>(Math.round(v*10**d)/10**d).toLocaleString('sk-SK',{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -2434,68 +2435,66 @@ function bpWeeklyWorkbook(recsIn){
   for(const m of mList){ const bl=[...months.get(m)].filter(x=>x!=='MRS').sort(); bl.forEach((b,i)=>cols.push({m,blk:b,first:i===0})); cols.push({m,blk:'MRS',first:!bl.length}); cols.push({m,blk:'CELKOM',celkom:true}); }
   const R=new Map(); const cenOf=k=>{ const c=cfg().cennik.find(x=>x[0]===k); return c? c[1] : null; };
   for(const r of rs){ const kat=r.kat??0; const key=[r.g,r.kl,kat].join('\u0001'); let o=R.get(key); if(!o){ o={g:r.g,kl:r.kl,kat,v:{}}; R.set(key,o); }
-    const m=r.rok*100+r.mes; for(const k of [m+'|'+bk(r.blok), m+'|CELKOM', 'TOT']){ const x=(o.v[k]??={ob:0,mz:0,pk:0}); x.ob+=r.ob; x.mz+=r.ob-r.nc; x.pk+=r.pk; } }
+    const m=r.rok*100+r.mes; for(const k of [m+'|'+bk(r.blok), m+'|CELKOM', 'TOT']){ const x=(o.v[k]??={ob:0,mz:0,ms:0,pk:0}); x.ob+=r.ob; x.mz+=r.ob-r.nc; x.ms+=r.ob-r.ns; x.pk+=r.pk; } }
   const rows=[...R.values()].sort((a,b)=> zar(a.g).localeCompare(zar(b.g),'sk') || a.g.localeCompare(b.g,'sk') || a.kl.localeCompare(b.kl,'sk') || (a.kat||999)-(b.kat||999));
-  const NC=9+cols.length*3; const aoa=[]; const sty={}; const merges=[];
+  const FX=5, BW=4, T0=FX, D0=FX+BW; // fixné stĺpce A–E, blok = Obrat, Marža, Marža (S), Pokrytie
+  const NC=D0+cols.length*BW; const aoa=[]; const sty={}; const merges=[];
   const S=(r,c,s)=>{ sty[r+','+c]=s; };
   const per= wModeV==='all'? 'všetky uložené mesiace' : wPeriodLabel();
-  // palette from the tool
   const C={navy:'001C9C',logo:'3552CC',hl:'E9ECF8',tile:'F3F4F7',line:'E2E5EC',ink:'141A33',muted:'626A84',soft:'F6F7FC',tot:'EEF1FB',white:'FFFFFF'};
   const ln=(c,st)=>({style:st||'thin',color:{rgb:c||C.line}});
   const F=(o={})=>({name:'Calibri',sz:o.sz||10,bold:!!o.b,color:{rgb:o.c||C.ink}});
   const fmtE='_-* #,##0\\ "€"_-;\\-* #,##0\\ "€"_-;_-* "-"??\\ "€"_-;_-@_-', fmtK='_-* #,##0_-;\\-* #,##0_-;_-* "-"??_-;_-@_-', fmtC='#,##0.00\\ "€"';
-  const colInfo=i=> i>=9? cols[Math.floor((i-9)/3)] : null;
-  const monthStart=i=>{ const c=colInfo(i); return c && (i-9)%3===0 && c.first; };
+  const HB=['Obrat','Marža','Marža (S)','Pokrytie'];
+  const colInfo=i=> i>=D0? cols[Math.floor((i-D0)/BW)] : null;
+  const monthStart=i=>{ const c=colInfo(i); return c && (i-D0)%BW===0 && c.first; };
   const r1=Array(NC).fill(null), r2=Array(NC).fill(null), r3=Array(NC).fill(null);
-  r1[0]='Neadreska – realita po týždňoch'; r1[6]=per; merges.push({s:{r:0,c:6},e:{r:0,c:8}});
-  ['Zaradenie','Klient','Material PLAN','Kategória','klient + hmotnosť','Cenník / 1000 ks'].forEach((h,i)=>r3[i]=h);
-  r2[6]='REALITA SPOLU'; merges.push({s:{r:1,c:6},e:{r:1,c:8}});
-  ['Obrat','Marža','Pokrytie'].forEach((h,i)=>r3[6+i]=h);
-  let lastM=null, mStart=9;
-  cols.forEach((col,i)=>{ const cc=9+i*3; if(col.m!==lastM){ if(lastM!=null) merges.push({s:{r:0,c:mStart},e:{r:0,c:cc-1}}); r1[cc]=MONTHS[col.m%100-1]+(multiY?' '+Math.floor(col.m/100):''); lastM=col.m; mStart=cc; }
-    r2[cc]= col.celkom? 'CELKOM '+MONTHS[col.m%100-1].toUpperCase() : col.blk; merges.push({s:{r:1,c:cc},e:{r:1,c:cc+2}});
-    r3[cc]='Obrat'; r3[cc+1]='Marža'; r3[cc+2]='Pokrytie'; });
-  if(lastM!=null) merges.push({s:{r:0,c:mStart},e:{r:0,c:9+cols.length*3-1}});
+  r1[0]='Neadreska – realita po týždňoch'; r1[T0]=per; merges.push({s:{r:0,c:T0},e:{r:0,c:T0+BW-1}});
+  ['Zaradenie','Klient','Material PLAN','Kategória','Cenník / 1000 ks'].forEach((h,i)=>r3[i]=h);
+  r2[T0]='REALITA SPOLU'; merges.push({s:{r:1,c:T0},e:{r:1,c:T0+BW-1}});
+  HB.forEach((h,i)=>r3[T0+i]=h);
+  let lastM=null, mStart=D0;
+  cols.forEach((col,i)=>{ const cc=D0+i*BW; if(col.m!==lastM){ if(lastM!=null) merges.push({s:{r:0,c:mStart},e:{r:0,c:cc-1}}); r1[cc]=MONTHS[col.m%100-1]+(multiY?' '+Math.floor(col.m/100):''); lastM=col.m; mStart=cc; }
+    r2[cc]= col.celkom? 'CELKOM '+MONTHS[col.m%100-1].toUpperCase() : col.blk; merges.push({s:{r:1,c:cc},e:{r:1,c:cc+BW-1}});
+    HB.forEach((h,k)=>r3[cc+k]=h); });
+  if(lastM!=null) merges.push({s:{r:0,c:mStart},e:{r:0,c:NC-1}});
   aoa.push(r1,r2,r3);
-  const vBorder=i=> monthStart(i)? ln(C.logo,'medium') : (i===6? ln(C.navy,'medium') : ln());
+  const vBorder=i=> monthStart(i)? ln(C.logo,'medium') : (i===T0? ln(C.navy,'medium') : ln());
   for(let i=0;i<NC;i++){
     const ci=colInfo(i);
-    // row 1: title / realita / month bands
-    if(i<6) S(0,i,{font:F({b:true,sz:i===0?14:10,c:C.navy}),alignment:{horizontal:'left',vertical:'center'}});
-    else if(i<9) S(0,i,{font:F({b:true,c:C.white}),fill:{fgColor:{rgb:C.navy}},alignment:{horizontal:'center',vertical:'center'}});
+    if(i<T0) S(0,i,{font:F({b:true,sz:i===0?14:10,c:C.navy}),alignment:{horizontal:'left',vertical:'center'}});
+    else if(i<D0) S(0,i,{font:F({b:true,c:C.white}),fill:{fgColor:{rgb:C.navy}},alignment:{horizontal:'center',vertical:'center'}});
     else S(0,i,{font:F({b:true,sz:11,c:C.white}),fill:{fgColor:{rgb:C.logo}},alignment:{horizontal:'center',vertical:'center'},border:{left:vBorder(i)}});
-    // row 2: blocks
-    if(i<6) S(1,i,{font:F({c:C.muted}),alignment:{horizontal:'left'}});
-    else if(i<9) S(1,i,{font:F({b:true,c:C.navy}),fill:{fgColor:{rgb:C.tot}},alignment:{horizontal:'center'},border:{left:vBorder(i)}});
+    if(i<T0) S(1,i,{font:F({c:C.muted}),alignment:{horizontal:'left'}});
+    else if(i<D0) S(1,i,{font:F({b:true,c:C.navy}),fill:{fgColor:{rgb:C.tot}},alignment:{horizontal:'center'},border:{left:vBorder(i)}});
     else S(1,i,{font:F({b:true,c: ci.celkom? C.white : C.navy}),fill:{fgColor:{rgb: ci.celkom? C.navy : C.hl}},alignment:{horizontal:'center'},border:{left:vBorder(i),bottom:ln(C.white)}});
-    // row 3: column headers
-    const hdrFill= i<6? C.tile : (i<9? C.tot : (ci.celkom? C.hl : C.tile));
-    S(2,i,{font:F({b:true,c:C.muted,sz:9}),fill:{fgColor:{rgb:hdrFill}},alignment:{horizontal:i<6?'left':'right',vertical:'center'},border:{bottom:ln(C.logo,'medium'),left:vBorder(i)}});
+    const hdrFill= i<T0? C.tile : (i<D0? C.tot : (ci.celkom? C.hl : C.tile));
+    S(2,i,{font:F({b:true,c:C.muted,sz:9}),fill:{fgColor:{rgb:hdrFill}},alignment:{horizontal:i<T0?'left':'right',vertical:'center',wrapText:true},border:{bottom:ln(C.logo,'medium'),left:vBorder(i)}});
   }
   S(1,0,{font:F({c:C.muted}),alignment:{horizontal:'left'}});
-  const valRow=(v)=>{ const out=[]; const t=v['TOT']||{ob:0,mz:0,pk:0}; out.push(t.ob,t.mz,t.pk); cols.forEach(col=>{ const x=v[col.m+'|'+col.blk]||{ob:0,mz:0,pk:0}; out.push(x.ob,x.mz,x.pk); }); return out.map(n=>Math.round(n*100)/100); };
-  const addSum=(acc,v)=>{ for(const [k,x] of Object.entries(v)){ const a=(acc[k]??={ob:0,mz:0,pk:0}); a.ob+=x.ob; a.mz+=x.mz; a.pk+=x.pk; } };
-  const styleData=(ri,kind)=>{ for(let i=0;i<NC;i++){ const isNum=i>=6; const mi=(i-6)%3; const ci=colInfo(i);
+  const valRow=(v)=>{ const out=[]; const t=v['TOT']||{ob:0,mz:0,ms:0,pk:0}; out.push(t.ob,t.mz,t.ms,t.pk); cols.forEach(col=>{ const x=v[col.m+'|'+col.blk]||{ob:0,mz:0,ms:0,pk:0}; out.push(x.ob,x.mz,x.ms,x.pk); }); return out.map(n=>Math.round(n*100)/100); };
+  const addSum=(acc,v)=>{ for(const [k,x] of Object.entries(v)){ const a=(acc[k]??={ob:0,mz:0,ms:0,pk:0}); a.ob+=x.ob; a.mz+=x.mz; a.ms+=x.ms; a.pk+=x.pk; } };
+  const styleData=(ri,kind)=>{ for(let i=0;i<NC;i++){ const isNum=i>=T0; const mi=(i-T0)%BW; const ci=colInfo(i);
       let fill=null, font, border={bottom:ln(), left:vBorder(i)};
       if(kind==='row'){
-        font=F({b:isNum&&mi===0, c: isNum&&mi===2? C.muted : (i===0? C.muted : C.ink)});
-        if(i===0) fill=C.tile; else if(i>=6&&i<9) fill=C.tot; else if(ci&&ci.celkom) fill=C.soft;
+        font=F({b:isNum&&mi===0, c: isNum&&mi===3? C.muted : (i===0? C.muted : C.ink)});
+        if(i===0) fill=C.tile; else if(i>=T0&&i<D0) fill=C.tot; else if(ci&&ci.celkom) fill=C.soft;
       } else if(kind==='sub'){
         font=F({b:true,c:C.navy}); fill=C.hl; border={top:ln(C.logo),bottom:ln(C.logo),left:vBorder(i)};
       } else { font=F({b:true,sz:11,c:C.white}); fill=C.navy; border={left: monthStart(i)? ln(C.logo,'medium') : ln(C.navy)}; }
       const s={font,border}; if(fill) s.fill={fgColor:{rgb:fill}};
-      if(isNum) s.numFmt= mi===2? fmtK : fmtE; if(i===5) s.numFmt=fmtC; if(i===3) s.alignment={horizontal:'center'};
+      if(isNum) s.numFmt= mi===3? fmtK : fmtE; if(i===4) s.numFmt=fmtC; if(i===3) s.alignment={horizontal:'center'};
       S(ri,i,s); } };
   let curG=null, gAcc={}, total={};
-  const flushG=()=>{ if(curG==null) return; const ri=aoa.length; aoa.push([zar(curG),null,curG+' – spolu',null,null,null,...valRow(gAcc)]); styleData(ri,'sub'); };
+  const flushG=()=>{ if(curG==null) return; const ri=aoa.length; aoa.push([zar(curG),null,curG+' – spolu',null,null,...valRow(gAcc)]); styleData(ri,'sub'); };
   for(const o of rows){ if(o.g!==curG){ flushG(); curG=o.g; gAcc={}; }
-    const ri=aoa.length; aoa.push([zar(o.g),o.kl,o.g,o.kat||null,o.kl+(o.kat||''),cenOf(o.kat),...valRow(o.v)]); styleData(ri,'row'); addSum(gAcc,o.v); addSum(total,o.v); }
+    const ri=aoa.length; aoa.push([zar(o.g),o.kl,o.g,o.kat||null,cenOf(o.kat),...valRow(o.v)]); styleData(ri,'row'); addSum(gAcc,o.v); addSum(total,o.v); }
   flushG();
-  const ri=aoa.length; aoa.push(['Celkový súčet',null,null,null,null,null,...valRow(total)]); styleData(ri,'tot');
+  const ri=aoa.length; aoa.push(['Celkový súčet',null,null,null,null,...valRow(total)]); styleData(ri,'tot');
   const ws=XLSX.utils.aoa_to_sheet(aoa);
   for(const [k,s] of Object.entries(sty)){ const [r,c2]=k.split(',').map(Number); const a=XLSX.utils.encode_cell({r,c:c2}); if(!ws[a]) ws[a]={t:'s',v:''}; ws[a].s=s; }
   ws['!merges']=merges;
-  ws['!cols']=[{wch:17},{wch:40},{wch:20},{wch:9},{wch:26},{wch:12},{wch:12},{wch:11},{wch:12},...cols.flatMap(()=>[{wch:10},{wch:10},{wch:11}])];
+  ws['!cols']=[{wch:17},{wch:40},{wch:20},{wch:9},{wch:12},{wch:12},{wch:11},{wch:11},{wch:12},...cols.flatMap(()=>[{wch:10},{wch:10},{wch:10},{wch:11}])];
   ws['!rows']=[{hpt:26},{hpt:18},{hpt:20}];
   const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Realita po týždňoch'); return wb;
 }
