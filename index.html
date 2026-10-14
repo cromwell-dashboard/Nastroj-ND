@@ -745,8 +745,8 @@ function processMonth(rowsV, rowsT, cfg, sel){
       const mt=cfg.mrs[str(r[V.mrs]).trim()]||'INE';
       { const a=akKey.get(key); if(a) a.so+=S; else akPend.push([key,S]); }
       const sub=['ND_SP','PRED_EXT','PRED_SP'].includes(mt)? U*c/1000 : 0;
-      if (mt==='PRED_EXT'||mt==='PRED_SP'){ add(blok,'PRED',kl,g0,0,0,R,U); add(blok,'SCH',kl,g0,S,0,0,0); }
-      else add(blok,'SCH',kl,g0,S,(mt==='ND_SP'||mt==='SPRAC')?0:R,R,(mt==='ND_SP'||mt==='SPRAC')?U:0,0, mt==='ND_SP'? {sspk:U,sspn:R,sspc:U*c/1000,ssps:S} : (mt==='SPRAC'? {sprn:R,sprs:S} : null));
+      if (mt==='PRED_EXT'||mt==='PRED_SP'){ add(blok,'PRED',kl,g0,0,U*c/1000,R,U); add(blok,'SCH',kl,g0,S,0,0,0); }
+      else add(blok,'SCH',kl,g0,S,mt==='ND_SP'?U*c/1000:(mt==='SPRAC'?0:R),R,(mt==='ND_SP'||mt==='SPRAC')?U:0,0, mt==='ND_SP'? {sspk:U,sspn:R,sspc:U*c/1000,ssps:S} : (mt==='SPRAC'? {sprn:R,sprs:S} : null));
     }
   }
   for (const t of tlac){ curOb=t.obch||topObch(t.kl); const tm=tlacMon(t); if(target && tm && tm!==target) continue; add(t.blok,'TLAC',t.kl,excGroup(cfg,t.kl,t.mat),t.ob,t.n,t.n,0,t.ks); tlacDet.push({kl:t.kl,mat:t.mat,blok:t.blok,ks:t.ks,ob:t.ob,n:t.n,dod:t.dod,popis:t.popis,zak:t.zak,obch:t.obch}); }
@@ -869,16 +869,7 @@ function saveStore(){ let ok=true; try{ localStorage.setItem(LS,JSON.stringify(s
 /* ================= Firebase (zdieľané dáta pre všetkých používateľov) =================
    Vyplňte konfiguráciu z Firebase konzoly (Project settings → Your apps → Web app → firebaseConfig).
    Kým je FB_CONFIG = null, nástroj ukladá dáta len v prehliadači (ako doteraz).            */
-   const FB_CONFIG = {
-  apiKey: "AIzaSyAi271i_qgsKiAeVBFOCbUfKccgyBClxSc",
-  authDomain: "cromwellgroup-tyzdenny-report.firebaseapp.com",
-  databaseURL: "https://cromwellgroup-tyzdenny-report-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "cromwellgroup-tyzdenny-report",
-  storageBucket: "cromwellgroup-tyzdenny-report.firebasestorage.app",
-  messagingSenderId: "998598557554",
-  appId: "1:998598557554:web:dcf8a546fcf8423386e7eb",
-  measurementId: "G-LSVKHVY5WH"
-};
+const FB_CONFIG = null;
 /* const FB_CONFIG = { apiKey:"…", authDomain:"…firebaseapp.com", projectId:"…", storageBucket:"…", messagingSenderId:"…", appId:"…" }; */
 const FB_AUTH = 'email';           // 'email' = e-mail + heslo (rovnaké účty ako v Zappise), 'google' = Google účet, 'anonymous' = bez prihlásenia
 const FB_ALLOWED_DOMAIN = 'cromwell.sk';  // povolená doména e-mailov pri prihlásení Googlom ('' = ktokoľvek)
@@ -1237,7 +1228,7 @@ function renderOverview(){
       const hdr=l=>`<tr><td colspan="9" style="text-align:left;padding-top:14px;font-weight:600;color:var(--navy)">${l}</td></tr>`;
       let h='<tr><th style="text-align:left">Kanál</th><th>Kusy</th><th style="text-align:left">Podiel</th><th>Obrat</th><th>Náklad</th><th>Marža</th><th>Marža %</th><th>Náklad / 1000</th><th>Obrat / 1000</th></tr>'; let old=false;
       let ext={k:0,o:0,n:0};
-      if(showS){ const sc=flt('SCH'); const ks=sum(sc,'pk'), spk=sum(sc,'sspk'), spn=sum(sc,'sspn')+sum(sc,'sprn'), spo=sum(sc,'ssps'), ob=sum(sc,'ob'), nTab=sum(sc,'nc');
+      if(showS){ const sc=flt('SCH'); const ks=sum(sc,'pk'), spk=sum(sc,'sspk'), spn=sum(sc,'sspn')+sum(sc,'sprn'), spo=sum(sc,'ssps'), ob=sum(sc,'ob'), nTab=sum(sc,'nc')-sum(sc,'sspc');
         const scOld=sc.some(r=>r.pk>0) && !sc.some(r=>r.ssps!==undefined);
         if(scOld) h+=hdr('Schránky')+`<tr><td colspan="9" style="text-align:left;background:color-mix(in srgb,var(--warn) 12%,transparent)"><b>Rozdelenie schránok na vlastnú sieť a poštu chýba</b> – mesiac bol uložený pred doplnením tejto funkcie. Nahrajte ho znova.</td></tr>`+row('Schránky spolu',ks,ks,ob,null,null,'tot');
         else h+=hdr('Schránky')+row('Vlastná sieť Cromwell <span class="small muted">náklad podľa cenníka</span>',ks-spk,ks,ob-spo,nTab,cL)+row('Podané na pošte (SP) <span class="small muted">vrátane spracovania</span>',spk,ks,spo,spn,cP)+row('Schránky spolu',ks,ks,ob,nTab+spn,null,'tot');
@@ -1250,7 +1241,7 @@ function renderOverview(){
         const za=flt('ZAHR'); const zk=sum(za,'pk'), zo=sum(za,'ob'), zn=sum(za,'nc');
         h+=hdr('Zahraničie')+row('Zahraničie <span class="small muted">zadanie zahraničie_CRW</span>',zk,zk,zo,zn,'#9B5DE5','tot');
         const sc=flt('SCH'), pr=flt('PRED'); const ks=sum(sc,'pk')+sum(pr,'pk')+zk, ob=sum(sc,'ob')+sum(pr,'ob')+zo;
-        const nS=sum(sc,'nc')+sum(sc,'sspn')+sum(sc,'sprn'), nP=sum(pr,'nown')+sum(pr,'nko')+sum(pr,'nsp');
+        const nS=sum(sc,'nc')-sum(sc,'sspc')+sum(sc,'sspn')+sum(sc,'sprn'), nP=sum(pr,'nown')+sum(pr,'nko')+sum(pr,'nsp');
         h+=`<tr><td colspan="9" style="padding:6px"></td></tr>`+row('<b>Zrátané schránky, predajne a zahraničie</b>',ks,0,ob,nS+nP+zn,null,'tot grand'); }
       $('#predTbl').innerHTML=h; $('#predOld').classList.toggle('hide',!old); } }
   // KPIs
