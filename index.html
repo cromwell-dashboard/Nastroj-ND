@@ -869,13 +869,23 @@ function saveStore(){ let ok=true; try{ localStorage.setItem(LS,JSON.stringify(s
 /* ================= Firebase (zdieľané dáta pre všetkých používateľov) =================
    Vyplňte konfiguráciu z Firebase konzoly (Project settings → Your apps → Web app → firebaseConfig).
    Kým je FB_CONFIG = null, nástroj ukladá dáta len v prehliadači (ako doteraz).            */
-const FB_CONFIG = null;
-/* const FB_CONFIG = { apiKey:"…", authDomain:"…firebaseapp.com", projectId:"…", storageBucket:"…", messagingSenderId:"…", appId:"…" }; */
-const FB_AUTH = 'email';           // 'email' = e-mail + heslo (rovnaké účty ako v Zappise), 'google' = Google účet, 'anonymous' = bez prihlásenia
-const FB_ALLOWED_DOMAIN = 'cromwell.sk';  // povolená doména e-mailov pri prihlásení Googlom ('' = ktokoľvek)
-const FB_COLL = 'neadreska';       // kolekcia vo Firestore
+const FB_CONFIG = 
+{
+  apiKey: "AIzaSyAi271i_qgsKiAeVBFOCbUfKccgyBClxSc",
+  authDomain: "cromwellgroup-tyzdenny-report.firebaseapp.com",
+  databaseURL: "https://cromwellgroup-tyzdenny-report-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "cromwellgroup-tyzdenny-report",
+  storageBucket: "cromwellgroup-tyzdenny-report.firebasestorage.app",
+  messagingSenderId: "998598557554",
+  appId: "1:998598557554:web:dcf8a546fcf8423386e7eb",
+  measurementId: "G-LSVKHVY5WH"
+};
+const FB_AUTH = 'email';
+const FB_ALLOWED_DOMAIN = 'cromwell.sk';
+const FB_COLL = 'neadreska';
 const FB_VER = '10.12.2';
 const FB={on:false,db:null,user:null,state:'off',last:{},timer:null,applying:false,err:''};
+  
 function fbDocs(){ // rozdelenie store na dokumenty (každý < 1 MB)
   const d={state:{cfg:store.cfg,plans:store.plans||{},closing:store.closing||{}}};
   for(const [k,m] of Object.entries(store.months||{})) d['m_'+k.replace(/[^0-9A-Za-z]/g,'_')]={key:k,data:m};
