@@ -691,7 +691,7 @@ function mapHeader(rows, spec){
   return null;
 }
 function katOf(cfg, hm){ const w=num(hm); if(!(w>0)) return 0; for (const [lim] of cfg.cennik) if (w<=lim) return lim; return cfg.cennik[cfg.cennik.length-1][0]; }
-const IFA=/intern[áa]\s*fakt[úu]ra/i; // INTERNÁ FAKTÚRA: len kusy, nulový obrat, náklad aj marža
+const IFA=/^\s*intern[áa]\s+fakt[úu]ra\s*$/i; // presne „INTERNÁ FAKTÚRA“ (bez ďalšieho popisu): len kusy, nulový obrat, náklad aj marža
 function costFor(cfg, kl, hm){ const k=katOf(cfg,hm); const K=String(kl||'').toLowerCase(); for(const e of (cfg.costExc||[])){ if(K.includes(String(e.kl).toLowerCase()) && e.kats && e.kats[k]!=null) return +e.kats[k]; } return cenaKat(cfg,hm); }
 function costKat(cfg, kl, k){ const K=String(kl||'').toLowerCase(); for(const e of (cfg.costExc||[])){ if(K.includes(String(e.kl).toLowerCase()) && e.kats && e.kats[k]!=null) return +e.kats[k]; } const c=cfg.cennik.find(x=>x[0]===+k); return c? c[1] : 0; }
 function cenaKat(cfg, hm){ const w=num(hm); if(!(w>0)) return 0;
@@ -1188,7 +1188,7 @@ $('#btnSave').onclick=()=>{ if(!result) return; const y=+$('#resRok').value, m=+
 function lastWeek(mo){ if(mo._lw!==undefined) return mo._lw; let w=null; for(const a of mo.recs) if(a.wk && inSpolu(a.sv) && (w==null||a.wk>w)) w=a.wk; Object.defineProperty(mo,'_lw',{value:w,enumerable:false,writable:true}); return w; }
 
 /* Vykázané výsledky BP 2026 (január–august) – natvrdo podľa Excelu BP. Rozdiel oproti spracovaným Výsledkom sa zobrazí ako riadok „Korekcia BP (vykázané)“. Od septembra 2026 sa vykazuje bez korekcie. */
-const BP_VYKAZ={"202601": {ob: 468183.33, mz: 143343.69, ms: 177543.9, ks: 34871060}, "202602": {ob: 578514.33, mz: 201252.18, ms: 262327.25, ks: 41867322}, "202603": {ob: 756349.33, mz: 252873.81, ms: 342294.13, ks: 52414470}, "202604": {ob: 570283.33, mz: 191693.01, ms: 233428.09, ks: 39636971}, "202605": {ob: 521552.33, mz: 166108.86, ms: 205496.26, ks: 38737847}, "202606": {ob: 707088.33, mz: 260584.7, ms: 307474.75, ks: 50368477}, "202607": {ob: 420731.33, mz: 131770.45, ms: 134174.81, ks: 32684653}, "202608": {ob: 483051.33, mz: 166931.51, ms: 176735.26, ks: 36100034}}; // vykázané BP bez INTERNEJ FAKTÚRY (tá je len v kusoch, obrat/marža 0)
+const BP_VYKAZ={202601:{ob:522350.0,mz:160545.0,ms:201445,ks:34871060},202602:{ob:632681.0,mz:209537.0,ms:278354.88,ks:41867322},202603:{ob:810516.0,mz:247235.88,ms:350306.82,ks:52414470},202604:{ob:624450.0,mz:198257.88,ms:246964.36,ks:39636971},202605:{ob:575719.0,mz:171695.88,ms:217303.33,ks:38737847},202606:{ob:761255.0,mz:255903.29,ms:312905.15,ks:50368477},202607:{ob:474898.0,mz:140436.0,ms:146692.72,ks:32684653},202608:{ob:537218.0,mz:179133.0,ms:194353,ks:36100034}}; // vykázané BP; riadok presne „INTERNÁ FAKTÚRA“ je len v kusoch (obrat/marža 0)
 /* Korekcia sa rozpočíta do skutočných záznamov mesiaca (pomerne podľa obratu, kusy podľa kusov) – nezobrazuje sa ako samostatný riadok.
    Platí výhradne pre mesiace v BP_VYKAZ (2026-01 až 2026-08). */
 const IFA_Z=['osp','oko','oown','ssps','sprs','nsp','nko','nown','sspn','sprn','sspc','rown'];
