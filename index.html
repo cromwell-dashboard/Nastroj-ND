@@ -402,6 +402,23 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
 .tpT tr.tpG td.stk{color:var(--navy)}
 .tpT tr.tpR td.stk{padding-left:28px;color:var(--ink)}
 .tpT .chev{display:inline-block;width:16px;color:var(--muted)}
+
+.cisGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:10px;margin-top:10px}
+.cisG{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:10px}
+.cisGrid .cisG{margin-top:0}
+.cisGH{display:flex;gap:10px;align-items:center;margin-bottom:6px;color:var(--navy)}
+.cisR{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:5px 0;border-top:1px solid var(--line)}
+.cisN{display:flex;flex-direction:column;min-width:0}.cisN b{font-weight:600;font-size:13px}
+.cisX{font-size:11px;color:#8a5a00}
+.cisR select{max-width:220px;font-size:12px}
+.ovTbl tr.klSel td{background:color-mix(in srgb,var(--logo) 8%,transparent)}
+.ovTbl tr.svTop td:not(.svLab):not(.cR){background:color-mix(in srgb,var(--logo) 4%,transparent)}
+.ovTbl td.mTog{cursor:pointer;white-space:nowrap}.ovTbl td.mTog:hover{color:var(--logo)}
+.ovTbl td.mTog .chev{display:inline-block;width:14px;color:var(--muted)}
+.ovTbl tr.katSub td{background:color-mix(in srgb,var(--tile) 70%,transparent);font-size:12px}
+.ovTbl tr.katSub td.cR{background:color-mix(in srgb,var(--logo) 4%,var(--tile))}
+.ovTbl td.mSub{font-weight:500;color:var(--ink)}
+#katTbl th.sepL,#katTbl td.sepL{border-left:1px solid var(--line)}
 /* plan */
 .ptbl{border-collapse:separate;border-spacing:0;font-size:12px;width:max-content;min-width:100%}
 .ptbl th{font-weight:500;color:var(--muted);padding:6px 4px;border-bottom:1px solid var(--line);text-align:right;background:var(--card);position:sticky;top:0;z-index:1}
@@ -431,7 +448,7 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
 <body>
 <div class="app">
 <aside class="rail" id="rail">
-  <button data-tab="upl" title="Nahrať"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg><span>Nahrať</span></button><button data-tab="ov" title="Prehľad"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Prehľad</span></button><button data-tab="kat" title="Kategórie"><svg viewBox="0 0 24 24"><path d="M6 21h12M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"/></svg><span>Kategórie</span></button><button data-tab="kl" title="Klienti"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M17 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7"/></svg><span>Klienti</span></button><button data-tab="ob" title="Obchodníci"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/><path d="M12 14l-1.5 3 1.5 4 1.5-4z"/></svg><span>Obchodníci</span></button><button data-tab="ko" title="Kontroly"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg><span>Kontroly</span></button><button data-tab="zl" title="Zľavy"><svg viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/><path d="m15 9-6 6"/></svg><span>Zľavy</span></button><button data-tab="tp" title="Týždenný prehľad"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 4v5M16 4v5M7 13h3M7 17h3M14 13h3M14 17h3"/></svg><span>Týždne</span></button><button data-tab="pl" title="Plán"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Plán</span></button>
+  <button data-tab="upl" title="Nahrať"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg><span>Nahrať</span></button><button data-tab="ov" title="Prehľad"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Prehľad</span></button><button data-tab="kat" title="Kategórie"><svg viewBox="0 0 24 24"><path d="M6 21h12M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"/></svg><span>Kategórie</span></button><button data-tab="kl" title="Klienti"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M17 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7"/></svg><span>Klienti</span></button><button data-tab="ob" title="Obchodníci"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/><path d="M12 14l-1.5 3 1.5 4 1.5-4z"/></svg><span>Obchodníci</span></button><button data-tab="ko" title="Kontroly"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg><span>Kontroly</span></button><button data-tab="zl" title="Zľavy"><svg viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/><path d="m15 9-6 6"/></svg><span>Zľavy</span></button><button data-tab="tp" title="Týždenný prehľad"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 4v5M16 4v5M7 13h3M7 17h3M14 13h3M14 17h3"/></svg><span>Týždne</span></button><button data-tab="cis" title="Číselník skupín"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg><span>Číselník</span></button><button data-tab="pl" title="Plán"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Plán</span></button>
   <span class="sp"></span>
   <button data-tab="ex" title="Export"><svg viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg><span>Export</span></button><button data-tab="set" title="Nastavenia"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Nastavenia</span></button>
 </aside>
@@ -540,6 +557,7 @@ th.hP2,td.cP{background:color-mix(in srgb,var(--tlac) 8%,transparent)}
 <section id="t-ko" class="hide"><div id="koBox"></div></section>
 <section id="t-zl" class="hide"><div id="zlBox"></div></section>
 <section id="t-tp" class="hide"><div id="tpBox"></div></section>
+<section id="t-cis" class="hide"><div id="cisBox"></div></section>
 
 <!-- ============ PLAN ============ -->
 <section id="t-pl" class="hide">
@@ -886,7 +904,12 @@ if(window.Chart) Chart.register({id:'monthBrackets', afterDraw(chart){ const m=c
 /* ---------- state & storage ---------- */
 const LS='neadreska.v1';
 let store={months:{},cfg:null};
-function ensureExc(){ if(!store.cfg.costExc) store.cfg.costExc=JSON.parse(JSON.stringify(DEFAULT_CFG.costExc||[])); const zd=store.cfg.zadania=store.cfg.zadania||{}; if(!zd['zahraničie_CRW']) zd['zahraničie_CRW']={inc:'ZAHR',typ:'SP',g:''}; if(zd['zahraničie_KLS']&&zd['zahraničie_KLS'].inc==='ZAHR') zd['zahraničie_KLS'].inc='NIE';
+const GTYPES=[['top','TOP klienti','Každý TOP klient (alebo skupina) sa vo výsledkoch zobrazuje samostatne.'],['stredni','Strední klienti',''],['mali','Malí klienti',''],['municipal','Municipál',''],['regionpress','Region Press',''],['redpost','Red Post',''],['new','New business','']];
+const GROUPS0=[...GROUPS];
+const GTYPE0={'Strední klienti':'stredni','Malí klienti':'mali','Municipál':'municipal','Region Press - NOVINY':'regionpress','Region Press - LETÁKY':'regionpress','Red Post':'redpost','New business':'new'};
+function syncGroups(){ const gs=store.cfg.groups; const ord=g=>GTYPES.findIndex(x=>x[0]===g.typ); const sorted=gs.map((g,i)=>({...g,i})).sort((a,b)=>ord(a)-ord(b)||a.i-b.i); GROUPS.length=0; sorted.forEach(g=>GROUPS.push(g.name)); }
+function ensureGroups(){ if(!store.cfg.groups) store.cfg.groups=GROUPS0.map(n=>({name:n,typ:GTYPE0[n]||'top'})); syncGroups(); }
+function ensureExc(){ ensureGroups(); if(!store.cfg.costExc) store.cfg.costExc=JSON.parse(JSON.stringify(DEFAULT_CFG.costExc||[])); const zd=store.cfg.zadania=store.cfg.zadania||{}; if(!zd['zahraničie_CRW']) zd['zahraničie_CRW']={inc:'ZAHR',typ:'SP',g:''}; if(zd['zahraničie_KLS']&&zd['zahraničie_KLS'].inc==='ZAHR') zd['zahraničie_KLS'].inc='NIE';
   const ex=store.cfg.exceptions=store.cfg.exceptions||[]; for(const e of DEFAULT_CFG.exceptions){ if(!ex.some(x=>String(x[0]).trim().toLowerCase()===String(e[0]).toLowerCase()&&String(x[1]).toLowerCase()===String(e[1]).toLowerCase())) ex.push([...e]); } }
 function loadStore(){ try{ const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.months) store=s; }catch(e){} 
   if(!store.cfg) store.cfg=JSON.parse(JSON.stringify(DEFAULT_CFG)); if(!store.cfg.excludeClients) store.cfg.excludeClients=[...DEFAULT_CFG.excludeClients]; if(!store.cfg.team) store.cfg.team=JSON.parse(JSON.stringify(DEFAULT_CFG.team)); if(!store.cfg.maskExtra) store.cfg.maskExtra=[]; }
@@ -1028,7 +1051,7 @@ function renderClose(){
 }
 
 /* ---------- navigation ---------- */
-const PAGES={ov:'Prehľad',kat:'Hmotnostné kategórie',kl:'Klienti',ob:'Obchodníci',ko:'Kontroly',zl:'Zľavy',tp:'Týždenný prehľad',tz:'Tlač letákov a zahraničie',pl:'Plán',upl:'Nahrať mesiac',ex:'Export',set:'Nastavenia'};
+const PAGES={ov:'Prehľad',kat:'Hmotnostné kategórie',kl:'Klienti',ob:'Obchodníci',ko:'Kontroly',zl:'Zľavy',tp:'Týždenný prehľad',cis:'Číselník skupín',tz:'Tlač letákov a zahraničie',pl:'Plán',upl:'Nahrať mesiac',ex:'Export',set:'Nastavenia'};
 let tab = 'upl';
 function go(t){ tab=t; render(); window.scrollTo({top:0}); }
 $$('#rail button').forEach(b=>b.onclick=()=>go(b.dataset.tab));
@@ -1043,7 +1066,7 @@ function renderLedger(){
   const show=['ov','kat','kl','ob','ko','zl','tp'].includes(tab);
   $('#perBar').classList.toggle('hide',!show); $('#topFilt').classList.toggle('hide',!show);
   $$('#rail button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  ['upl','ov','kat','kl','ob','ko','zl','tp','pl','ex','set'].forEach(x=>$('#t-'+x).classList.toggle('hide',x!==tab));
+  ['upl','ov','kat','kl','ob','ko','zl','tp','cis','pl','ex','set'].forEach(x=>$('#t-'+x).classList.toggle('hide',x!==tab));
   $('#pgTitle').textContent=PAGES[tab];
   if(!show) return;
   const ys=years(); if(!ys.length) ys.push(ledYear); if(!ys.includes(ledYear)) ledYear=ys[ys.length-1];
@@ -1404,38 +1427,41 @@ function renderKat(){
     if(!P || !hasPlan){ $('#katNote').textContent=`Plán ${y} podľa hmotnostných kategórií nie je k dispozícii.`; $('#katTbl').innerHTML=''; return; }
     if(!realM.size){ $('#katNote').textContent='Vo zvolenom období zatiaľ nie je realita na porovnanie s plánom.'; $('#katTbl').innerHTML=''; return; }
     const dtxt=(a,b,unit)=>{ if(a==null||b==null) return '–'; const d=b-a; const s=(d>=0?'+':'')+(unit==='pp'?fmt(d,1)+' p. b.':fmt(d,2)+' €'); return `<b style="color:${Math.abs(d)<0.005?'inherit':(d>=0?'#7fd6a4':'#ff9a8f')}">${s}</b>`; };
-    h=`<colgroup><col style="width:3.2%"><col style="width:12.3%"><col style="width:7.5%"><col style="width:7.5%"><col style="width:8.5%"><col style="width:6%"><col style="width:6%"><col style="width:8.5%"><col style="width:5.5%"><col style="width:5.5%"><col style="width:8.5%"><col style="width:5%"><col style="width:5%"><col style="width:5%"><col style="width:5.5%"></colgroup>
-      <tr><th></th><th style="text-align:left">Kategória</th><th colspan="3" class="sep" style="text-align:center">Kusy</th><th colspan="3" class="sep" style="text-align:center">Obrat €</th><th colspan="3" class="sep" style="text-align:center">Marža € <span style="font-weight:400">(cenník)</span></th><th colspan="2" class="sep" style="text-align:center">Podiel kusov</th><th colspan="2" class="sep" style="text-align:center">Cena / 1000 ks</th></tr>
-      <tr><th></th><th></th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th class="sep">plán</th><th>realita</th></tr>`;
+    h=`<colgroup><col style="width:3.2%"><col style="width:12.3%"><col style="width:7.5%"><col style="width:7.5%"><col style="width:8.5%"><col style="width:6%"><col style="width:6%"><col style="width:8.5%"><col style="width:5.5%"><col style="width:5.5%"><col style="width:8.5%"><col style="width:5.5%"><col style="width:5.5%"><col style="width:8.5%"><col style="width:4.5%"><col style="width:4.5%"><col style="width:4.5%"><col style="width:5%"></colgroup>
+      <tr><th></th><th style="text-align:left">Kategória</th><th colspan="3" class="sep" style="text-align:center">Kusy</th><th colspan="3" class="sep" style="text-align:center">Obrat €</th><th colspan="3" class="sep" style="text-align:center">Marža € <span style="font-weight:400">(cenník)</span></th><th colspan="3" class="sep" style="text-align:center">Marža (S) €</th><th colspan="2" class="sep" style="text-align:center">Podiel kusov</th><th colspan="2" class="sep" style="text-align:center">Cena / 1000 ks</th></tr>
+      <tr><th></th><th></th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th style="text-align:left">plnenie</th><th class="sep">plán</th><th>realita</th><th class="sep">plán</th><th>realita</th></tr>`;
     const line=(name,p,r,cls,rk,shBaseP,shBaseR,attr='')=>{ const pp=p?.pk||0, rp=r?.pk||0; const shP=shBaseP?pp/shBaseP*100:null, shR=shBaseR?rp/shBaseR*100:null;
-      const oP=p?.ob||0, oR=r?.ob||0, mP=p?.mz||0, mR=(r?.ob||0)-(r?.nc||0); const cP=per(oP,pp), cR=per(oR,rp); const tot=cls.includes('tot');
+      const oP=p?.ob||0, oR=r?.ob||0, mP=p?.mz||0, mR=(r?.ob||0)-(r?.nc||0), sR=(r?.ob||0)-(r?.ns||0); const cP=per(oP,pp), cR=per(oR,rp); const tot=cls.includes('tot');
       const nm=name.replace(/<[^>]+>/g,'').replace(/[▸▾]/g,'').trim(); const tip = tot? '' : `<div style="opacity:.75;margin-bottom:2px">${nm}</div>Podiel kusov: ${dtxt(shP,shR,'pp')}<br>Cena / 1000 ks: ${dtxt(cP,cR)}`;
       return `<tr class="${cls}" ${attr} ${tip?`data-tip="${tip.replace(/"/g,'&quot;')}"`:''}><td class="rk">${rk||''}</td><td class="kn">${name}</td>`+
         `<td class="sep">${fmt(pp)}</td><td>${fmt(rp)}</td>${plBar(rp,pp)}`+
         `<td class="sep">${fmt(oP)}</td><td>${fmt(oR)}</td>${plBar(oR,oP)}`+
         `<td class="sep">${fmt(mP)}</td><td>${fmt(mR)}</td>${mP>0?plBar(mR,mP):'<td class="muted">–</td>'}`+
+        `<td class="sep">${fmt(mP)}</td><td>${fmt(sR)}</td>${mP>0?plBar(sR,mP):'<td class="muted">–</td>'}`+
         `<td class="sep">${shP==null?'–':fmt(shP,1)+' %'}</td><td>${shR==null?'–':fmt(shR,1)+' %'}</td>`+
         `<td class="sep">${f2(cP)}</td><td>${f2(cR)}</td></tr>`; };
     for(const k of allK){ const ti=top.indexOf(k);
       h+=line(chev(k)+katLab(k),PT[k],T[k],'katrow'+(ti>=0?' top3':''),ti>=0?`<span class="rkb">${ti+1}</span>`:'',ptot.pk,tot.pk,`data-k="${k}"`);
       if(katOpen.has(k)){ const cl=[...new Set([...Object.keys(TK[k]||{}),...Object.keys(PK[k]||{})])].filter(c=>Math.abs(TK[k]?.[c]?.pk||0)>0.5||Math.abs(PK[k]?.[c]?.pk||0)>0.5||Math.abs(TK[k]?.[c]?.ob||0)>0.5||Math.abs(PK[k]?.[c]?.ob||0)>0.5).sort((a,b)=>Math.max(TK[k]?.[b]?.pk||0,PK[k]?.[b]?.pk||0)-Math.max(TK[k]?.[a]?.pk||0,PK[k]?.[a]?.pk||0));
         cl.slice(0,MAXK).forEach(c=>{ h+=line(`<span class="klr">${esc(c)}</span>`,PK[k]?.[c],TK[k]?.[c],'subrow','',PT[k]?.pk||0,T[k]?.pk||0); });
-        if(cl.length>MAXK) h+=`<tr class="subrow"><td></td><td colspan="14" class="small muted" style="text-align:left;padding-left:30px">+ ${cl.length-MAXK} ďalších klientov</td></tr>`; } }
+        if(cl.length>MAXK) h+=`<tr class="subrow"><td></td><td colspan="17" class="small muted" style="text-align:left;padding-left:30px">+ ${cl.length-MAXK} ďalších klientov</td></tr>`; } }
     h+=line('Spolu',ptot,tot,'tot','',ptot.pk,tot.pk);
     const mon=[...realM].sort((a,b)=>a-b).map(m=>MONTHS[m-1]).join(', ');
-    $('#katNote').textContent=`Plán ${y} za mesiace s realitou (${mon}). Kliknutím na kategóriu zobrazíte klientov (podiel pri klientoch = podiel v rámci kategórie). Rozdiel v podiele a cene sa ukáže v bubline po nábehu myšou na stĺpce Podiel kusov a Cena / 1000 ks. Marža v pláne aj realite podľa cenníka.`;
+    $('#katNote').textContent=`Plán ${y} za mesiace s realitou (${mon}). Kliknutím na kategóriu zobrazíte klientov (podiel pri klientoch = podiel v rámci kategórie). Rozdiel v podiele a cene sa ukáže v bubline po nábehu myšou na stĺpce Podiel kusov a Cena / 1000 ks. Marža v pláne aj realite podľa cenníka; Marža (S) = skutočná podľa Výsledkov, porovnáva sa s plánom marže.`;
   } else {
-    const v=(x,m)=> !(x&&x.pk>0)? '–' : fmt(m==='c'? x.ob/x.pk*1000 : m==='n'? x.ns/x.pk*1000 : m==='l'? x.nc/x.pk*1000 : (x.ob-x.ns)/x.pk*1000,2);
-    h='<tr><th></th><th style="text-align:left">Kategória</th><th>Kusy</th><th>Podiel kusov</th><th>Obrat €</th><th>Cena / 1000 ks</th><th>Skut. náklad / 1000 ks</th><th>Cenník / 1000 ks</th><th>Marža (S) / 1000 ks</th><th>Marža (S) %</th></tr>';
-    const line=(name,x,base,cls,rk,attr='')=>`<tr class="${cls}" ${attr}><td class="rk">${rk||''}</td><td style="text-align:left">${name}</td><td>${fmt(x.pk)}</td><td>${pct(x.pk,base)}</td><td>${fmt(x.ob)}</td><td>${v(x,'c')}</td><td>${v(x,'n')}</td><td>${v(x,'l')}</td><td>${v(x,'m')}</td><td>${x.ob?pct(x.ob-x.ns,x.ob):'–'}</td></tr>`;
-    if(!allK.length) h+='<tr><td></td><td class="muted" colspan="9">Pre zvolený výber nie sú kusy.</td></tr>';
+    const mzCmp=x=>{ const mz=x.ob-x.nc, ms=x.ob-x.ns, d=mz-ms, p= Math.abs(ms)>0.5? d/Math.abs(ms)*100 : null; const col=c=>c<-0.05?'var(--bad)':(c>0.05?'var(--ok)':'inherit');
+      return `<td class="sepL">${fmt(mz)}</td><td>${fmt(ms)}</td><td style="color:${col(d)}">${d>=0?'+':''}${fmt(d)}</td><td style="color:${col(p??0)};font-weight:700">${p==null?'–':(p>=0?'+':'')+fmt(p,1)+' %'}</td>`; };
+    const v=(x,m)=> !(x&&x.pk>0)? '–' : fmt(m==='c'? x.ob/x.pk*1000 : m==='n'? x.ns/x.pk*1000 : m==='l'? x.nc/x.pk*1000 : m==='mz'? (x.ob-x.nc)/x.pk*1000 : (x.ob-x.ns)/x.pk*1000,2);
+    h='<tr><th></th><th style="text-align:left">Kategória</th><th>Kusy</th><th>Podiel kusov</th><th>Obrat €</th><th>Cena / 1000 ks</th><th>Skut. náklad / 1000 ks</th><th>Cenník / 1000 ks</th><th class="sepL">Marža €</th><th>Marža (S) €</th><th>Rozdiel €</th><th title="(Marža − Marža (S)) / Marža (S)">Cenník vs. skutočnosť</th><th class="sepL">Marža / 1000 ks</th><th>Marža (S) / 1000 ks</th><th>Marža %</th><th>Marža (S) %</th></tr>';
+    const line=(name,x,base,cls,rk,attr='')=>`<tr class="${cls}" ${attr}><td class="rk">${rk||''}</td><td style="text-align:left">${name}</td><td>${fmt(x.pk)}</td><td>${pct(x.pk,base)}</td><td>${fmt(x.ob)}</td><td>${v(x,'c')}</td><td>${v(x,'n')}</td><td>${v(x,'l')}</td>${mzCmp(x)}<td class="sepL">${v(x,'mz')}</td><td>${v(x,'m')}</td><td>${x.ob?pct(x.ob-x.nc,x.ob):'–'}</td><td>${x.ob?pct(x.ob-x.ns,x.ob):'–'}</td></tr>`;
+    if(!allK.length) h+='<tr><td></td><td class="muted" colspan="15">Pre zvolený výber nie sú kusy.</td></tr>';
     for(const k of allK){ const ti=top.indexOf(k);
       h+=line(chev(k)+katLab(k),T[k],tot.pk,'katrow'+(ti>=0?' top3':''),ti>=0?`<span class="rkb">${ti+1}</span>`:'',`data-k="${k}"`);
       if(katOpen.has(k)){ const cl=Object.entries(TK[k]||{}).filter(([c,x])=>Math.abs(x.pk)>0.5||Math.abs(x.ob)>0.5).sort((a,b)=>b[1].pk-a[1].pk);
         cl.slice(0,MAXK).forEach(([c,x])=>{ h+=line(`<span class="klr">${esc(c)}</span>`,x,T[k].pk,'subrow',''); });
-        if(cl.length>MAXK) h+=`<tr class="subrow"><td></td><td colspan="9" class="small muted" style="text-align:left;padding-left:30px">+ ${cl.length-MAXK} ďalších klientov</td></tr>`; } }
+        if(cl.length>MAXK) h+=`<tr class="subrow"><td></td><td colspan="15" class="small muted" style="text-align:left;padding-left:30px">+ ${cl.length-MAXK} ďalších klientov</td></tr>`; } }
     if(allK.length) h+=line('Spolu',tot,tot.pk,'tot','');
-    $('#katNote').textContent='Poradie a jemné podsvietenie označujú 3 najčastejšie kategórie podľa počtu kusov. Kliknutím na kategóriu zobrazíte klientov (podiel pri klientoch = podiel v rámci kategórie).';
+    $('#katNote').textContent='Poradie a jemné podsvietenie označujú 3 najčastejšie kategórie podľa počtu kusov. Kliknutím na kategóriu zobrazíte klientov. Cenník vs. skutočnosť = (Marža podľa cenníka − Marža (S)) / Marža (S): záporné (červené) = cenník počíta s vyššími nákladmi, než sú skutočné, teda v náš neprospech.';
   }
   $('#katTbl').classList.toggle('fixedtbl',katView==='plan');
   $('#katTbl').innerHTML=h;
@@ -1622,6 +1648,62 @@ $('#paGo').onclick=()=>{ const kl=$('#paKl').value.trim(); if(!kl){toast('Zadajt
 
 /* ---------- clients page ---------- */
 let klSel='', klQ2='';
+
+/* ---------- spoločná výsledková tabuľka (rovnaká ako v Prehľade) pre klientov ---------- */
+function resTableHTML(items,opt={}){
+  const y= range? range.y : ledYear; const realMy=new Set(Object.values(store.months).filter(m=>m.rok===y).map(m=>m.mes));
+  const lastReal=realMy.size? Math.max(...realMy) : 12; const pFrom= range? range.from : 1, pTo= range? range.to : 12; const yTo= Math.min(pTo,lastReal);
+  const inP=m=>m>=pFrom&&m<=pTo, inY=m=>m>=1&&m<=yTo;
+  const fOk=r=>(fSv.size? fSv.has(r.sv) : inSpolu(r.sv))&&(!fGr.size||fGr.has(r.g));
+  const R=opt.R||allRecs(r=>(r.rok===y||r.rok===y-1)&&fOk(r)); const PL=opt.PL||planRecs(store,cfg(),y).filter(fOk);
+  const agg=(arr,f)=>arr.reduce((a,x)=>{ if(!f(x)) return a; a.ob+=x.ob||0; a.mz+=(x.ob||0)-(x.nc||0); a.ms+=(x.ob||0)-(x.ns||0); a.ks+= x.sv==='TLAC'? (x.ks||0) : (x.pk||0); a.n++; return a; },{ob:0,mz:0,ms:0,ks:0,n:0});
+  const aggP=(arr,f)=>arr.reduce((a,x)=>{ if(!f(x)) return a; a.ob+=x.ob||0; a.mz+=x.mz||0; a.ks+=x.pk||0; a.n++; return a; },{ob:0,mz:0,ks:0,n:0});
+  const MET=[['ob','Obrat','€'],['mz','Marža','€'],['ms','Marža (S)','€'],['ks','Kusy','']];
+  const colr=v=> v==null? 'var(--muted)' : v>=100? 'var(--ok)' : v>=90? 'var(--warn)' : 'var(--bad)'; const pc=(a,b)=> b? a/b*100 : null;
+  const bar=v=> v==null? '<span class="muted">–</span>' : `<span class="pp" style="color:${colr(v)}">${fmt(v,0)} %</span><span class="pbar" style="width:60px"><i style="width:${Math.max(2,Math.min(100,v/120*100))}%;background:${colr(v)}"></i></span>`;
+  const idx=v=> v==null? '<span class="muted">–</span>' : `<b style="color:${colr(v)}">${fmt(v,0)} %</b>`;
+  const f=(v,u)=> v==null? '<span class="muted">–</span>' : fmt(v)+(u?' €':''); const d=(v,u)=> v==null? '' : `<span style="color:${v>=0?'var(--ok)':'var(--bad)'}">${v>=0?'+':''}${fmt(v)}${u?' €':''}</span>`;
+  const perL= range? (pFrom===pTo? MONTHS[pFrom-1] : MONTHS[pFrom-1].slice(0,3)+'–'+MONTHS[pTo-1].slice(0,3)) : 'Rok';
+  let h=`<div class="scroll"><table class="tbl ovTbl"><tr class="gh"><th colspan="2"></th><th colspan="2" class="hR">Realita</th><th colspan="2" class="hPl">Plán</th><th colspan="2" class="hPn">Plnenie ${perL.toLowerCase()}</th><th colspan="2" class="hPn">Plnenie YTD</th><th colspan="2" class="hLy">Minulý rok</th><th colspan="2" class="hLy">Index k MR</th></tr>
+    <tr><th></th><th></th><th>${perL}</th><th>YTD</th><th>${perL}</th><th>YTD</th><th style="text-align:left">%</th><th>Rozdiel</th><th style="text-align:left">%</th><th>Rozdiel</th><th>${perL}</th><th>YTD</th><th>${perL}</th><th>YTD</th></tr>`;
+  let n=0;
+  const PLK= items.some(it=>it.expand)? planKatRecs(y).filter(fOk) : null;
+  const rowHTML=(rP,rY,lP,lY,pP,pY,m,u,lab,cls,first,labCell)=>{ const pv=x=> (!x||!x.n)? null : (m==='ms'? x.mz : x[m]); const lv=x=> x&&x.n? x[m] : null; const vP=pv(pP), vY=pv(pY);
+    return `<tr class="${cls}">${first?labCell:''}${lab}
+        <td class="cR"><b>${f(rP[m],u)}</b></td><td class="cR">${f(rY[m],u)}</td><td>${f(vP,u)}</td><td>${f(vY,u)}</td>
+        <td style="text-align:left">${bar(vP!=null?pc(rP[m],vP):null)}</td><td>${vP!=null?d(rP[m]-vP,u):''}</td><td style="text-align:left">${bar(vY!=null?pc(rY[m],vY):null)}</td><td>${vY!=null?d(rY[m]-vY,u):''}</td>
+        <td class="muted">${f(lv(lP),u)}</td><td class="muted">${f(lv(lY),u)}</td><td>${idx(lP&&lP.n?pc(rP[m],lP[m]):null)}</td><td>${idx(lY&&lY.n?pc(rY[m],lY[m]):null)}</td></tr>`; };
+  for(const it of items){ const flt=it.flt;
+    const rP=agg(R.filter(x=>x.rok===y&&inP(x.mes)),flt), rY=agg(R.filter(x=>x.rok===y&&inY(x.mes)),flt);
+    const lP=agg(R.filter(x=>x.rok===y-1&&inP(x.mes)),flt), lY=agg(R.filter(x=>x.rok===y-1&&inY(x.mes)),flt);
+    const pP=aggP(PL.filter(p=>inP(p.mes)&&realMy.has(p.mes)),flt), pY=aggP(PL.filter(p=>inY(p.mes)&&realMy.has(p.mes)),flt);
+    if(!rY.n&&!pY.n&&!lY.n) continue; n++;
+    // rozbalené metriky → riadky po kategóriách
+    const subs={}; let extra=0;
+    if(it.expand){ const kats=[...new Set([...R.filter(x=>flt(x)&&(x.rok===y||x.rok===y-1)).map(x=>x.kat||0),...(PLK||[]).filter(flt).map(p=>p.kat||0)])].sort((a,b)=>(a||999)-(b||999));
+      for(const [m] of MET){ if(!klMetOpen.has(it.key+'|'+m)) continue; const tot=rP[m]||0;
+        subs[m]=kats.map(k=>{ const fk=x=>flt(x)&&(x.kat||0)===k; const a=agg(R.filter(x=>x.rok===y&&inP(x.mes)),fk);
+          return {k,share: tot? a[m]/tot*100 : null, rP:a, rY:agg(R.filter(x=>x.rok===y&&inY(x.mes)),fk), lP:agg(R.filter(x=>x.rok===y-1&&inP(x.mes)),fk), lY:agg(R.filter(x=>x.rok===y-1&&inY(x.mes)),fk),
+            pP:aggP((PLK||[]).filter(p=>inP(p.mes)&&realMy.has(p.mes)),fk), pY:aggP((PLK||[]).filter(p=>inY(p.mes)&&realMy.has(p.mes)),fk)}; }).filter(s=>s.rP.n||s.rY.n||s.pY.n||s.lY.n);
+        extra+=subs[m].length; } }
+    const labCell=`<td rowspan="${4+extra}" class="svLab ${it.click?'svTog':''}" ${it.click?`data-kl="${esc(it.key)}"`:''}><b>${esc(it.label)}</b>${it.sub?`<div class="small muted">${esc(it.sub)}</div>`:''}</td>`;
+    MET.forEach(([m,ml,u],i)=>{ const op=klMetOpen.has(it.key+'|'+m);
+      const lab= it.expand? `<td class="mLab mTog" data-km="${esc(it.key)}|${m}" title="Rozbaliť po hmotnostných kategóriách"><span class="chev">${op?'▾':'▸'}</span>${ml}</td>` : `<td class="mLab">${ml}</td>`;
+      h+=rowHTML(rP,rY,lP,lY,pP,pY,m,u,lab,`${i===0?'svTop':''} ${it.cls||''}`,i===0,labCell);
+      for(const s of (subs[m]||[])) h+=rowHTML(s.rP,s.rY,s.lP,s.lY,s.pP,s.pY,m,u,`<td class="mLab mSub">${s.k? 'do '+s.k+' g' : 'bez kat.'}<span class="muted"> · ${s.share==null?'–':fmt(s.share,1)+' %'}</span></td>`,'katSub',false,''); }); }
+  if(!n) h+='<tr><td colspan="14" class="muted">Pre zvolený výber nie sú dáta.</td></tr>';
+  return h+'</table></div>';
+}
+let klShowAll=false; const klMetOpen=new Set();
+function planKatRecs(y){ // plán po kategóriách (z riadkov s cats; týždenný plán má kat priamo)
+  if(store.wplan?.[y]&&Object.keys(store.wplan[y].clients||{}).length) return planRecs(store,cfg(),y);
+  const P=getPlan(store,y); const out=[]; if(!P) return out;
+  for(const row of P.rows){ if(!inSpolu(row.sv)) continue; const g=planGroup(cfg(),row)||'NEZARADENÉ';
+    for(let i=0;i<12;i++){ const v=planMonth(row,i); if(!(v.ob||v.mz||v.pk)) continue;
+      if(row.cats){ const cs=Object.entries(row.cats); const sOb=cs.reduce((s,[,c])=>s+c.ob[i],0), sKs=cs.reduce((s,[,c])=>s+c.ks[i],0), sMz=cs.reduce((s,[,c])=>s+(c.mz?c.mz[i]:0),0);
+        for(const [k,c] of cs){ const ob=sOb? c.ob[i]/sOb*v.ob : 0, pk=sKs? c.ks[i]/sKs*v.pk : 0, mz=sMz? (c.mz?c.mz[i]:0)/sMz*v.mz : (sOb? c.ob[i]/sOb*v.mz : 0); if(ob||pk) out.push({rok:y,mes:i+1,sv:row.sv,kl:row.kl,g,kat:+k,ob,mz,pk}); } }
+      else out.push({rok:y,mes:i+1,sv:row.sv,kl:row.kl,g,kat:0,ob:v.ob,mz:v.mz,pk:v.pk}); } }
+  return out; }
 function renderClients(){
   const fOk=r=>(fSv.size? fSv.has(r.sv) : inSpolu(r.sv))&&(!fGr.size||fGr.has(r.g));
   const recs=allRecs(r=>inRange(r)&&fOk(r));
@@ -1634,13 +1716,13 @@ function renderClients(){
   $('#klPer').textContent='· '+periodText();
   $('#klSearch').value=klQ2; $('#klSearch').oninput=e=>{ klQ2=e.target.value; renderClients(); const s=$('#klSearch'); s.focus(); s.setSelectionRange(s.value.length,s.value.length); };
   const list=Object.values(K).filter(x=>(Math.abs(x.ob)>0.5||x.pob>0.5)&&(!klQ2||x.kl.toLowerCase().includes(klQ2.toLowerCase()))).sort((a,b)=>b.ob-a.ob||b.pob-a.pob);
-  let h='<tr><th style="text-align:left">Klient</th><th style="text-align:left">Skupina</th><th>Obrat €</th><th>Plán €</th><th style="text-align:left">Plnenie</th><th>Marža (S) €</th><th>Marža (S) %</th><th>Kusy</th><th>Cena / 1000 ks</th></tr>';
-  for(const x of list) h+=`<tr class="katrow ${x.kl===klSel?'top3':''}" data-kl="${esc(x.kl)}"><td style="text-align:left;max-width:320px;overflow:hidden;text-overflow:ellipsis">${esc(x.kl)}</td><td style="text-align:left" class="muted">${esc([...x.gs].join(', '))}</td><td><b>${fmt(x.ob)}</b></td><td class="muted">${x.pob?fmt(x.pob):'–'}</td>${plBar(x.ob,x.pob)}<td>${fmt(x.ob-x.ns)}</td><td>${x.ob?pct(x.ob-x.ns,x.ob):'–'}</td><td>${fmt(x.pk)}</td><td>${x.pk>0?fmt(x.ob/x.pk*1000,2):'–'}</td></tr>`;
-  const T=list.reduce((a,x)=>({ob:a.ob+x.ob,ns:a.ns+x.ns,pk:a.pk+x.pk,pob:a.pob+x.pob}),{ob:0,ns:0,pk:0,pob:0});
-  if(list.length) h+=`<tr class="tot"><td style="text-align:left">Spolu (${list.length})</td><td></td><td>${fmt(T.ob)}</td><td>${T.pob?fmt(T.pob):'–'}</td>${plBar(T.ob,T.pob)}<td>${fmt(T.ob-T.ns)}</td><td>${pct(T.ob-T.ns,T.ob)}</td><td>${fmt(T.pk)}</td><td>${T.pk>0?fmt(T.ob/T.pk*1000,2):'–'}</td></tr>`;
-  else h+='<tr><td colspan="9" class="muted">Pre zvolený výber nie sú dáta.</td></tr>';
-  $('#klTbl').innerHTML=h;
-  $('#klTbl').querySelectorAll('tr[data-kl]').forEach(tr=>tr.onclick=()=>{ klSel= klSel===tr.dataset.kl? '' : tr.dataset.kl; renderClients(); if(klSel) $('#klDet').scrollIntoView({behavior:'smooth',block:'start'}); });
+  const LIM=30; const shown= klShowAll? list : list.slice(0,LIM);
+  const items=shown.map(x=>({key:x.kl,label:x.kl,sub:[...x.gs].join(', '),click:true,expand:true,cls:x.kl===klSel?'klSel':'',flt:r=>r.kl===x.kl}));
+  const box=$('#klTbl'); const wrap=box.parentElement;
+  wrap.innerHTML=resTableHTML(items)+(list.length>LIM?`<div style="text-align:center;margin-top:10px"><button class="btn ghost small" id="klMore">${klShowAll?'Zobraziť len prvých '+LIM:'Zobraziť všetkých '+list.length+' klientov'}</button></div>`:'')+'<table id="klTbl" class="hide"></table>';
+  const more=$('#klMore'); if(more) more.onclick=()=>{ klShowAll=!klShowAll; renderClients(); };
+  wrap.querySelectorAll('td[data-km]').forEach(td=>td.onclick=e=>{ e.stopPropagation(); const k=td.dataset.km; klMetOpen.has(k)?klMetOpen.delete(k):klMetOpen.add(k); const sy=window.scrollY; renderClients(); window.scrollTo(0,sy); });
+  wrap.querySelectorAll('td[data-kl]').forEach(td=>td.onclick=()=>{ klSel= klSel===td.dataset.kl? '' : td.dataset.kl; renderClients(); if(klSel) $('#klDet').scrollIntoView({behavior:'smooth',block:'start'}); });
   renderClientDetail(recs.filter(r=>r.kl===klSel), (getPlan(store,y)?.rows||[]).filter(r=>r.kl===klSel), K[klSel], realM, y);
 }
 function renderClientDetail(rs, prow, x, realM, y){
@@ -1660,15 +1742,11 @@ function renderClientDetail(rs, prow, x, realM, y){
   if(!ks.length) kt+='<tr><td colspan="7" class="muted">Bez kusov vo zvolenom období.</td></tr>';
   box.innerHTML=`<div class="row"><div><h2 style="margin:0">${esc(klSel)}</h2><div class="small muted">${esc([...x.gs].join(', '))} · ${periodText()}</div></div><span class="sp"></span>
     <button class="btn ghost small" id="klToKat">Detail v Hmotnostných kategóriách</button><button class="btn ghost small" id="klClose">Zavrieť</button></div>
-    <div class="grid g4" style="margin:14px 0">
-      <div class="kc"><div class="kl">Obrat</div><div class="kv">${fmt(x.ob)} €</div><div class="ks">${x.pk?fmt(x.ob/x.pk*1000,2)+' € / 1000 ks':''}</div></div>
-      <div class="kc"><div class="kl">Plnenie plánu</div><div class="kv">${pc==null?'–':`<span style="color:${colr(pc)}">${fmt(pc,0)} %</span><small>plán ${fmt(x.pob)} €</small>`}</div>${pc!=null?`<div class="kbar"><i style="width:${Math.max(2,Math.min(100,pc))}%;background:${colr(pc)}"></i></div>`:''}</div>
-      <div class="kc"><div class="kl">Marža (S)</div><div class="kv">${fmt(x.ob-x.ns)} €<small>${pct(x.ob-x.ns,x.ob)}</small></div></div>
-      <div class="kc"><div class="kl">Kusy</div><div class="kv">${fmt(x.pk)}<small>ks</small></div><div class="ks">${pPk?fmt(x.pk/pPk*100,0)+' % plánu kusov':''}</div></div>
-    </div>
+    <div style="margin:14px 0">${resTableHTML([{key:'DET:'+klSel,label:'Spolu za klienta',expand:true,flt:r=>r.kl===klSel}])}</div>
     <div id="klCal"></div>`;
   $('#klClose').onclick=()=>{ klSel=''; renderClients(); };
   $('#klToKat').onclick=()=>{ katKl=klSel; go('kat'); };
+  box.querySelectorAll('td[data-km]').forEach(td=>td.onclick=()=>{ const k=td.dataset.km; klMetOpen.has(k)?klMetOpen.delete(k):klMetOpen.add(k); const sy=window.scrollY; renderClients(); window.scrollTo(0,sy); });
   renderKlCal(klSel, range? range.y : ledYear);
 }
 
@@ -1686,7 +1764,7 @@ function renderObch(){
   const klOb={}; allRecs().forEach(r=>{ if(!r.obch) return; const m=(klOb[r.kl]??={}); m[r.obch]=(m[r.obch]||0)+Math.abs(r.ob); });
   const topOb=kl=>{ const m=klOb[kl]; return m? Object.entries(m).sort((a,b)=>b[1]-a[1])[0][0] : ''; };
   const O={}; const zo=n=>(O[n]??={n,kl:{},ob:0,ns:0,pk:0,pob:0,zad:0,zak:new Set()}); const zk=(o,k)=>(o.kl[k]??={kl:k,ob:0,ns:0,pk:0,pob:0,zad:0,zak:new Set()});
-  recs.forEach(r=>{ const o=zo(r.obch||'(bez obchodníka)'), c=zk(o,r.kl); for(const x of [o,c]){ x.ob+=r.ob; x.ns+=r.ns; x.pk+=r.pk; } });
+  recs.forEach(r=>{ const o=zo(r.obch||'(bez obchodníka)'), c=zk(o,r.kl); for(const x of [o,c]){ x.ob+=r.ob; x.ns+=r.ns; x.nc=(x.nc||0)+r.nc; x.pk+=r.pk; } });
   const showCnt= !fSv.size || fSv.has('SCH') || fSv.has('PRED');
   let allZad=0; const allKl=new Set();
   recs.forEach(r=>{ if(Math.abs(r.ob)>0.5) allKl.add(r.kl); });
@@ -1698,21 +1776,21 @@ function renderObch(){
   const list=Object.values(O).filter(o=>teamSet.has(o.n)&&(Math.abs(o.ob)>0.5||o.zad||o.pob>0.5)).sort((a,b)=>(leadSet.has(b.n)?1:0)-(leadSet.has(a.n)?1:0)||b.ob-a.ob);
   const cnt=v=> showCnt? fmt(v) : '–';
   const sh=(v,t)=> showCnt&&t? `<span class="muted small">${fmt(v/t*100,1)} %</span>` : '<span class="muted small">–</span>';
-  let h='<tr><th style="text-align:left">Obchodník</th><th>Klienti</th><th>% klientov</th><th>Zákazky</th><th>Zadania</th><th>% zadaní</th><th>Kusy</th><th>Obrat €</th><th>Plán €</th><th style="text-align:left">Plnenie</th><th>Marža (S) €</th><th>Marža (S) %</th></tr>';
-  const line=(name,x,nKl,cls,attr='',isSub=false)=>`<tr class="${cls}" ${attr}><td style="text-align:left">${name}</td><td>${nKl==null?'':fmt(nKl)}</td><td>${isSub?'':sh(nKl||0,allKl.size)}</td><td>${cnt(x.zak.size)}</td><td>${cnt(x.zad)}</td><td>${sh(x.zad,allZad)}</td><td>${fmt(x.pk)}</td><td><b>${fmt(x.ob)}</b></td><td class="muted">${x.pob?fmt(x.pob):'–'}</td>${plBar(x.ob,x.pob)}<td>${fmt(x.ob-x.ns)}</td><td>${x.ob?pct(x.ob-x.ns,x.ob):'–'}</td></tr>`;
-  const T={ob:0,ns:0,pk:0,pob:0,zad:0,zak:new Set()}; let nKlT=new Set();
+  let h='<tr><th style="text-align:left">Obchodník</th><th>Klienti</th><th>% klientov</th><th>Zákazky</th><th>Zadania</th><th>% zadaní</th><th>Kusy</th><th>Obrat €</th><th>Plán €</th><th style="text-align:left">Plnenie</th><th>Marža €</th><th>Marža (S) €</th><th>Marža %</th><th>Marža (S) %</th></tr>';
+  const line=(name,x,nKl,cls,attr='',isSub=false)=>`<tr class="${cls}" ${attr}><td style="text-align:left">${name}</td><td>${nKl==null?'':fmt(nKl)}</td><td>${isSub?'':sh(nKl||0,allKl.size)}</td><td>${cnt(x.zak.size)}</td><td>${cnt(x.zad)}</td><td>${sh(x.zad,allZad)}</td><td>${fmt(x.pk)}</td><td><b>${fmt(x.ob)}</b></td><td class="muted">${x.pob?fmt(x.pob):'–'}</td>${plBar(x.ob,x.pob)}<td>${fmt(x.ob-(x.nc||0))}</td><td>${fmt(x.ob-x.ns)}</td><td>${x.ob?pct(x.ob-(x.nc||0),x.ob):'–'}</td><td>${x.ob?pct(x.ob-x.ns,x.ob):'–'}</td></tr>`;
+  const T={ob:0,ns:0,nc:0,pk:0,pob:0,zad:0,zak:new Set()}; let nKlT=new Set();
   for(const o of list){ const kls=Object.values(o.kl).filter(c=>Math.abs(c.ob)>0.5||c.zad||c.pob>0.5);
     h+=line(`<span style="display:inline-block;width:14px;color:var(--muted)">${obOpen.has(o.n)?'▾':'▸'}</span>${esc(o.n)} ${leadSet.has(o.n)?'<span class="badge">vedúci</span>':''}`,o,kls.length,'katrow'+(obOpen.has(o.n)?' top3':''),`data-ob="${esc(o.n)}"`);
     if(obOpen.has(o.n)) kls.sort((a,b)=>b.ob-a.ob).forEach(c=>{ h+=line(`<span class="klr">${esc(c.kl)}</span>`,c,null,'subrow','',true); });
-    T.ob+=o.ob;T.ns+=o.ns;T.pk+=o.pk;T.pob+=o.pob;T.zad+=o.zad; o.zak.forEach(z=>T.zak.add(z)); kls.forEach(c=>nKlT.add(c.kl)); }
+    T.ob+=o.ob;T.ns+=o.ns;T.nc+=(o.nc||0);T.pk+=o.pk;T.pob+=o.pob;T.zad+=o.zad; o.zak.forEach(z=>T.zak.add(z)); kls.forEach(c=>nKlT.add(c.kl)); }
   if(list.length) h+=line('Tím spolu',T,nKlT.size,'tot');
   // others / branches
-  const OT={ob:0,ns:0,pk:0,pob:0,zad:0,zak:new Set()}; const klO=new Set();
-  Object.values(O).filter(o=>!teamSet.has(o.n)).forEach(o=>{ OT.ob+=o.ob;OT.ns+=o.ns;OT.pk+=o.pk;OT.pob+=o.pob;OT.zad+=o.zad; o.zak.forEach(z=>OT.zak.add(o.n+'|'+z)); Object.values(o.kl).forEach(c=>{ if(Math.abs(c.ob)>0.5||c.zad) klO.add(c.kl); }); });
+  const OT={ob:0,ns:0,nc:0,pk:0,pob:0,zad:0,zak:new Set()}; const klO=new Set();
+  Object.values(O).filter(o=>!teamSet.has(o.n)).forEach(o=>{ OT.ob+=o.ob;OT.ns+=o.ns;OT.nc+=(o.nc||0);OT.pk+=o.pk;OT.pob+=o.pob;OT.zad+=o.zad; o.zak.forEach(z=>OT.zak.add(o.n+'|'+z)); Object.values(o.kl).forEach(c=>{ if(Math.abs(c.ob)>0.5||c.zad) klO.add(c.kl); }); });
   if(Math.abs(OT.ob)>0.5||OT.zad) h+=line('<span style="display:inline-block;width:14px"></span>Ostatní / Pobočky',OT,klO.size,'othrow');
-  const AT={ob:T.ob+OT.ob,ns:T.ns+OT.ns,pk:T.pk+OT.pk,pob:T.pob+OT.pob,zad:T.zad+OT.zad,zak:new Set([...T.zak,...OT.zak])};
+  const AT={ob:T.ob+OT.ob,ns:T.ns+OT.ns,nc:T.nc+OT.nc,pk:T.pk+OT.pk,pob:T.pob+OT.pob,zad:T.zad+OT.zad,zak:new Set([...T.zak,...OT.zak])};
   if(list.length||OT.zad) h+=line('Neadreska spolu',AT,allKl.size,'tot allrow');
-  else h+=`<tr><td colspan="12" class="muted">Nikto z tímu nemá v zvolenom období dáta. Tím upravíte v Nastaveniach.</td></tr>`;
+  else h+=`<tr><td colspan="14" class="muted">Nikto z tímu nemá v zvolenom období dáta. Tím upravíte v Nastaveniach.</td></tr>`;
   $('#obTbl').innerHTML=h;
   $('#obTbl').querySelectorAll('tr[data-ob]').forEach(tr=>tr.onclick=()=>{ const n=tr.dataset.ob; obOpen.has(n)?obOpen.delete(n):obOpen.add(n); renderObch(); });
   $('#obNote').textContent= showCnt? `Percentá sú podiel z celej neadresky v zvolenom období: všetkých ${fmt(allZad)} zadaní a ${fmt(allKl.size)} klientov (všetci obchodníci).` : '';
@@ -2426,6 +2504,37 @@ function bindTP(recs){
   $('#tpXls').onclick=async()=>{ if(!recs.length){ toast('Vo zvolenom období nie sú dáta'); return; } const y=range?range.y:ledYear; await saveFile(`Neadreska_tyzdenny_prehlad_${y}${range?'-'+String(range.from).padStart(2,'0')+(range.to!==range.from?'_'+String(range.to).padStart(2,'0'):''):''}.xlsx`,wbToBlob(bpWeeklyWorkbook(recs))); };
 }
 
+
+/* ---------- Číselník skupín (TOP / strední / malí …) ---------- */
+let cisQ='';
+function renderCis(){
+  const box=$('#cisBox'); const C=cfg(); const y= range? range.y : ledYear;
+  const ob={}; allRecs(r=>r.rok===y&&inSpolu(r.sv)).forEach(r=>{ ob[r.kl]=(ob[r.kl]||0)+r.ob; });
+  const clients=[...new Set([...Object.keys(C.clients),...Object.keys(ob)])].filter(k=>k&&!IFA.test(k)).sort((a,b)=>a.localeCompare(b,'sk'));
+  const excBy={}; (C.exceptions||[]).forEach(([k,t,g])=>{ (excBy[String(k).trim()]??=[]).push(`${t} → ${g}`); });
+  const byG={}; clients.forEach(k=>{ const g=C.clients[k]||''; (byG[g]??=[]).push(k); });
+  const q=cisQ.toLowerCase(); const vis=k=>!q||k.toLowerCase().includes(q);
+  const opts=cur=> GTYPES.map(([ty,lab])=>`<optgroup label="${lab}">${C.groups.filter(g=>g.typ===ty).map(g=>`<option value="${esc(g.name)}" ${g.name===cur?'selected':''}>${esc(g.name)}</option>`).join('')}</optgroup>`).join('')+`<optgroup label="Nový"><option value="__top">➕ Ako nový TOP klient (samostatne)</option></optgroup>`;
+  const row=k=>`<div class="cisR"><div class="cisN"><b>${esc(k)}</b>${ob[k]?`<span class="muted small">${fmt(ob[k])} € v ${y}</span>`:''}${excBy[k]?`<span class="cisX" title="Výnimky podľa materiálu">výnimka: ${esc(excBy[k].join('; '))}</span>`:''}</div><select data-mv="${esc(k)}"><option value="">– bez skupiny –</option>${opts(C.clients[k]||'')}</select></div>`;
+  const gcard=g=>{ const ks=(byG[g.name]||[]).filter(vis); const tot=(byG[g.name]||[]).reduce((s,k)=>s+(ob[k]||0),0);
+    return `<div class="cisG"><div class="cisGH"><b>${esc(g.name)}</b><span class="muted small">${(byG[g.name]||[]).length} klientov · ${fmt(tot)} €</span><span class="sp"></span>${g.custom?`<button class="btn ghost small" data-ren="${esc(g.name)}">Premenovať</button>${(byG[g.name]||[]).length?'':`<button class="btn ghost small" data-gdel="${esc(g.name)}">Odstrániť</button>`}`:''}</div>${ks.map(row).join('')}${(C.exceptions||[]).filter(e=>e[2]===g.name&&vis(String(e[0]))).map(e=>`<div class="cisR"><div class="cisN"><b>${esc(e[0])}</b><span class="cisX">len letáky, kde materiál obsahuje „${esc(e[1])}“ (výnimka – upravíte v Nastaveniach)</span></div></div>`).join('')}${(!ks.length&&!(C.exceptions||[]).some(e=>e[2]===g.name))?'<div class="muted small" style="padding:6px 0">Žiadni klienti'+(q?' (filter)':'')+'.</div>':''}</div>`; };
+  let h=`<div class="card"><div class="row" style="gap:10px"><div><h2 style="margin:0">Číselník skupín${HELP('Zaradenie klientov do skupín. TOP klienti sa vo výsledkoch zobrazujú samostatne, ostatní súhrnne (Strední, Malí, Municipál…). Klienta preradíte výberom v rozbaľovacom zozname – zmena platí hneď pre všetky mesiace. Výnimky podľa materiálu (napr. Česká Distribuční → Tesco) majú prednosť pred číselníkom.')}</h2><div class="small muted">Preraďte klienta výberom skupiny. „➕ Ako nový TOP klient“ vytvorí samostatnú skupinu.</div></div><span class="sp"></span>
+    <input id="cisQ" placeholder="Hľadať klienta" value="${esc(cisQ)}" style="min-width:240px"></div></div>`;
+  const noG=(byG['']||[]).filter(vis); if(noG.length) h+=`<div class="card" style="border-color:#E8B54A"><h3 style="margin:0 0 6px;color:#8a5a00">Bez skupiny (${noG.length})</h3>${noG.map(row).join('')}</div>`;
+  for(const [ty,lab,desc] of GTYPES){ const gs=C.groups.filter(g=>g.typ===ty); if(!gs.length) continue;
+    h+=`<div class="card"><div class="row"><h3 style="margin:0">${lab}</h3><span class="small muted">${desc}</span></div><div class="${ty==='top'?'cisGrid':''}">${gs.map(gcard).join('')}</div></div>`; }
+  h+=`<p class="small muted">Plán 2026 z BP ostáva v pôvodných skupinách. Ak pribudne nový TOP klient, v podklade do masky sa zobrazí ako nová skupina; masku BP (hárok Neadreska 2027) treba pre neho doplniť o nový blok.</p>`;
+  box.innerHTML=h;
+  $('#cisQ').oninput=e=>{ cisQ=e.target.value; renderCis(); const i=$('#cisQ'); i.focus(); i.setSelectionRange(i.value.length,i.value.length); };
+  box.querySelectorAll('[data-mv]').forEach(s=>s.onchange=()=>{ const k=s.dataset.mv; let g=s.value;
+    if(g==='__top'){ const n=(prompt('Názov novej TOP skupiny (zobrazí sa samostatne):', k.replace(/,?\s*(s\.\s*r\.\s*o\.|a\.\s*s\.|spol\. s r\.o\.).*$/i,'').trim())||'').trim(); if(!n){ renderCis(); return; }
+      if(C.groups.some(x=>x.name===n)){ alert('Skupina s týmto názvom už existuje.'); renderCis(); return; } const li=C.groups.map(x=>x.typ).lastIndexOf('top'); C.groups.splice(li+1,0,{name:n,typ:'top',custom:true}); g=n; }
+    if(g) C.clients[k]=g; else delete C.clients[k]; syncGroups(); saveStore(); toast(g? `${k} → ${g}` : `${k}: bez skupiny`); renderCis(); });
+  box.querySelectorAll('[data-ren]').forEach(b=>b.onclick=()=>{ const old=b.dataset.ren; const n=(prompt('Nový názov skupiny:',old)||'').trim(); if(!n||n===old) return; if(C.groups.some(x=>x.name===n)){ alert('Skupina s týmto názvom už existuje.'); return; }
+    C.groups.find(x=>x.name===old).name=n; for(const k of Object.keys(C.clients)) if(C.clients[k]===old) C.clients[k]=n; (C.exceptions||[]).forEach(e=>{ if(e[2]===old) e[2]=n; }); syncGroups(); saveStore(); renderCis(); });
+  box.querySelectorAll('[data-gdel]').forEach(b=>b.onclick=()=>{ const n=b.dataset.gdel; if(!confirm('Odstrániť prázdnu skupinu '+n+'?')) return; C.groups=C.groups.filter(x=>x.name!==n); syncGroups(); saveStore(); renderCis(); });
+}
+
 /* ---------- downloads ---------- */
 let dlNs; async function getDl(){ if(dlNs!==undefined) return dlNs; try{ dlNs = window.claude&&window.claude.use? await window.claude.use('downloads') : null; }catch(e){ dlNs=null; } return dlNs; }
 async function saveFile(name, data){ const dl=await getDl(); const blob= data instanceof Blob? data : new Blob([data]);
@@ -2709,7 +2818,7 @@ $('#exclAdd').onclick=()=>{ const v=$('#exclIn').value.trim(); if(!v) return; if
 $('#excAdd').onclick=()=>{cfg().exceptions.push(['','',GROUPS[0]]);saveStore();renderSettings();};
 
 /* ---------- render ---------- */
-function render(){ renderLedger(); renderDataStat(); if(tab==='upl'){ renderResult(); } if(tab==='ov'){ renderOverview(); renderOvTable(); renderOvTlac(); } if(tab==='kat') renderKat(); if(tab==='kl') renderClients(); if(tab==='ob') renderObch(); if(tab==='ko'||tab==='zl') renderKZ(tab); if(tab==='tp') renderTP();  if(tab==='pl') renderPlan(); if(tab==='ex') renderExport(); if(tab==='set') renderSettings(); }
+function render(){ renderLedger(); renderDataStat(); if(tab==='upl'){ renderResult(); } if(tab==='ov'){ renderOverview(); renderOvTable(); renderOvTlac(); } if(tab==='kat') renderKat(); if(tab==='kl') renderClients(); if(tab==='ob') renderObch(); if(tab==='ko'||tab==='zl') renderKZ(tab); if(tab==='tp') renderTP(); if(tab==='cis') renderCis();  if(tab==='pl') renderPlan(); if(tab==='ex') renderExport(); if(tab==='set') renderSettings(); }
 render();
 </script>
 </body>
